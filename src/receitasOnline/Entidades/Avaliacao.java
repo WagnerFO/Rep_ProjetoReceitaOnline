@@ -1,51 +1,58 @@
 package receitasOnline.Entidades;
 
 public class Avaliacao {
-    // Atributos da entidade AVALIACAO
-    private Integer id; // Identificador único da avaliação
-    private int nota; // Nota atribuída na avaliação
-    private String comentario; // Comentário adicional da avaliação
+    private Integer id; // Identificador da avaliação
+    private int nota;
+    private String comentario;
+    private Integer usuarioId; // Relacionamento com o Usuario (responsável pela avaliação)
 
-    public Avaliacao(){
-        //Construtor padrão
-    }
+    // Construtor padrão
+    public Avaliacao() {}
+
     // Construtor sem ID, para novas avaliações (ID será gerado pelo banco)
     public Avaliacao(int nota, String comentario) {
         this.nota = nota;
         this.comentario = comentario;
     }
-
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
-    public Avaliacao(Integer id, int nota, String comentario) {
+    public Avaliacao(Integer id, int nota, String comentario, Integer usuarioId) {
         this.id = id;
         this.nota = nota;
         this.comentario = comentario;
+        this.usuarioId = usuarioId;
     }
 
-    // Métodos getter para acessar os atributos
+    // Getters e Setters
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getNota() {
         return nota;
     }
 
-    public String getComentario() {
-        return comentario;
-    }
-
-    // Métodos setter para modificar os atributos
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public void setNota(int nota) {
         this.nota = nota;
     }
 
+    public String getComentario() {
+        return comentario;
+    }
+
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     @Override

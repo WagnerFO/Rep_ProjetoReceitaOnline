@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import receitasOnline.Entidades.Categoria;
+import receitasOnline.Entidades.Receita;
 import receitasOnline.Factory.ConnectionSingleton;
 import receitasOnline.IRepositorio.IRepositorioCategoria;
 
@@ -76,21 +77,43 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
         }
     }
 
-    @Override
-    public ArrayList<Categoria> listarTodos() throws SQLException {
-        String sql = "SELECT * FROM categoria";
-        ArrayList<Categoria> categorias = new ArrayList<>();
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Categoria categoria = new Categoria(
-                    rs.getInt("id"),
-                    rs.getString("nome")
-                );
-                categorias.add(categoria);
+@Override
+public ArrayList<Categoria> listarTodos() throws SQLException {
+    String sql = "SELECT * FROM categoria";
+    ArrayList<Categoria> categorias = new ArrayList<>();
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        
+        while (rs.next()) {
+            // Criação da categoria
+            Integer categoriaId = rs.getInt("id");
+            String nomeCategoria = rs.getString("nome");
+
+            // Agora, buscaremos as receitas associadas a essa categoria
+            String sqlReceitas = "SELECT * FROM receita WHERE categoriaId = ?";
+            ArrayList<Receita> receitas = new ArrayList<>();
+            
+            try (PreparedStatement stmtReceitas = connection.prepareStatement(sqlReceitas)) {
+                stmtReceitas.setInt(1, categoriaId);
+                ResultSet rsReceitas = stmtReceitas.executeQuery();
+                
+                while (rsReceitas.next()) {
+                    Receita receita = new Receita();
+                    receita.setId(rsReceitas.getInt("id"));
+                    receita.setTitulo(rsReceitas.getString("titulo"));
+                    receita.setDescricao(rsReceitas.getString("descricao"));
+                    receitas.add(receita);
+                }
             }
+
+            // Criação da categoria com as receitas associadas
+            Categoria categoria = new Categoria(categoriaId, nomeCategoria, receitas);
+            categorias.add(categoria);
         }
-        return categorias;
     }
+    
+    return categorias;
+}
 
 }

@@ -9,27 +9,30 @@ public class Receita {
     private String descricao;
     private String modoPreparo;
     private List<String> ingredientes;
+    private Categoria categoria;
 
     public Receita(){
         //Construtor padrão
     }
 
     // Construtores existentes
-    public Receita(Integer id, String titulo, String descricao) {
+    public Receita(Integer id, String titulo, String descricao, Categoria categoria) {
         this.id = id;
         this.titulo = titulo; // ou this.nome = nome se você quiser usar 'nome'
         this.descricao = descricao;
         this.modoPreparo = "";  // Defina um valor padrão se necessário
         this.ingredientes = new ArrayList<>(); // Defina uma lista vazia por padrão
+        this.categoria=categoria;
     }
 
     // Construtor completo, usado quando a receita já tem um ID
-    public Receita(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes) {
+    public Receita(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.modoPreparo = modoPreparo;
         this.ingredientes = ingredientes;
+        this.categoria=categoria;
     }
 
     // Getters e setters
@@ -53,6 +56,10 @@ public class Receita {
         return descricao;
     }
 
+    public Categoria getCategoria(){
+        return categoria;
+    }
+
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -73,6 +80,9 @@ public class Receita {
         this.ingredientes = ingredientes;
     }
 
+    public void setCategoria(Categoria categoria){
+        this.categoria=categoria;
+    }
     @Override
     public String toString() {
         return "Receita: " + titulo + ", Descrição: " + descricao + ", Modo de Preparo: " + modoPreparo;

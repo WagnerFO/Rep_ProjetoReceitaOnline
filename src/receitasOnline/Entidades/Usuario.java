@@ -10,6 +10,10 @@ public class Usuario {
     private int numero;
     private String cidade;
     private String estado;
+
+    public Usuario(){
+        //Construtor padrão;
+    }
     
     // Construtor sem ID (id será gerado pelo banco)
     public Usuario(String nome, String email, String senha, String rua, int numero, String cidade, String estado) {

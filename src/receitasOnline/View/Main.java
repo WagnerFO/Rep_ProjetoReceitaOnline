@@ -1,26 +1,24 @@
 package receitasOnline.View;
 
 import java.util.Scanner;
-import java.util.List;
-import receitasOnline.Servicos.*;
-import receitasOnline.Entidades.*;
+
+import receitasOnline.Entidades.Avaliacao;
+import receitasOnline.IRepositorio.*;
 import receitasOnline.Repositorio.*;
-import receitasOnline.Estruturas.ListaEncadeada; // Importando a lista encadeada
 
 // Classe principal que contém o método main e os menus de interação com o usuário
 public class Main {    
     // Scanner para entrada do usuário
     private static Scanner scanner = new Scanner(System.in);
     
-    // Serviços para lidar com usuários, avaliações, receitas, ingredientes e categorias
-    private static IUsuarioServico usuarioServico = new UsuarioServico(new UsuarioRepositorio());
-    private static IAvaliacaoServico avaliacaoServico = new AvaliacaoServico(new AvaliacaoRepositorio());
-    private static IReceitaServico receitaServico = new ReceitaServico(new ReceitaRepositorio());
-    private static IIngredienteServico ingredienteServico = new IngredienteServico(new IngredienteRepositorio());
-    private static ICategoriaServico categoriaServico = new CategoriaServico(new CategoriaRepositorio());
-
+    private static IRepositorioAvaliacao repositorioAvaliacaoSql = new RepositorioAvaliacaoSQL();
+    private static IRepositorioCategoria repositorioCategoriaSql = new RepositorioCategoriaSQL();
+    private static IRepositorioIngrediente repositorioIngredienteSql = new RepositorioIngredienteSQL();
+    private static IRepositorioReceita repositorioReceitaSql = new RepositorioReceitaSQL();
+    private static IRepositorioUsuario repositorioUsuarioSql = new RepositorioUsuarioSQL();
+    
     // Lista encadeada para armazenar receitas
-    private static ListaEncadeada<Receita> listaReceitas = new ListaEncadeada<>();
+    //private static ListaEncadeada<Receita> listaReceitas = new ListaEncadeada<>();
 
     // Método principal que inicia o programa e exibe o menu principal
     public static void main(String[] args) {
@@ -134,21 +132,22 @@ public class Main {
 
         switch (opcao) {
             case 1:
-                System.out.println("Digite o ID:");
-                int id = scanner.nextInt();
+                Avaliacao avaliacao = new Avaliacao();
                 System.out.println("Digite a Nota:");
-                int nota = scanner.nextInt();
+                avaliacao.setNota(scanner.nextInt());
                 scanner.nextLine();
                 System.out.println("Digite o Comentário:");
-                String comentario = scanner.nextLine();
-                avaliacaoServico.adicionarAvaliacao(new Avaliacao(id, nota, comentario));
+                avaliacao.setComentario(scanner.nextLine());
+                repositorioAvaliacaoSql.adicionar(avaliacao);
                 break;
             case 2:
+                Avaliacao avaliacao2 = new Avaliacao();
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                Avaliacao avaliacao = avaliacaoServico.buscarAvaliacao(id);
-                if (avaliacao != null) {
-                    System.out.println("Nota: " + avaliacao.getNota() + ", Comentário: " + avaliacao.getComentario());
+                avaliacao2.setId(scanner.nextInt());
+                repositorioAvaliacaoSql.buscar(avaliacao2.getId());
+
+                if (avaliacao2 != null) {
+                    System.out.println("Nota: " + avaliacao2.getNota() + ", Comentário: " + avaliacao2.getComentario());
                 } else {
                     System.out.println("Avaliação não encontrada.");
                 }
