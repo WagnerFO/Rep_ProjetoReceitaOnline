@@ -2,6 +2,7 @@ package receitasOnline.Repositorio;
 
 import receitasOnline.Entidades.Ingrediente;
 import receitasOnline.Factory.ConnectionFactory;
+import receitasOnline.IRepositorio.IIngredienteRepositorio;
 
 import java.sql.*;
 import java.util.ArrayList;

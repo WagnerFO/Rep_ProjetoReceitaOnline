@@ -6,6 +6,9 @@ public class Avaliacao {
     private int nota; // Nota atribuída na avaliação
     private String comentario; // Comentário adicional da avaliação
 
+    public Avaliacao(){
+        //Construtor padrão
+    }
     // Construtor sem ID, para novas avaliações (ID será gerado pelo banco)
     public Avaliacao(int nota, String comentario) {
         this.nota = nota;

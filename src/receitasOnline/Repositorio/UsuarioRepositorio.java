@@ -1,6 +1,8 @@
 package receitasOnline.Repositorio;
 
 import receitasOnline.Entidades.Usuario;
+import receitasOnline.IRepositorio.IUsuarioRepositorio;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -3,7 +3,7 @@ package receitasOnline.Servicos;
 import java.util.List;
 
 import receitasOnline.Entidades.Avaliacao;
-import receitasOnline.Repositorio.IAvaliacaoRepositorio;
+import receitasOnline.IRepositorio.IAvaliacaoRepositorio;
 
 //A classe AvaliacaoServico implementa a interface IAvaliacaoServico
 public class AvaliacaoServico implements IAvaliacaoServico{
@@ -46,7 +46,7 @@ public class AvaliacaoServico implements IAvaliacaoServico{
 	@Override
 	public List<Avaliacao> listarAvaliacoes() {
 		// TODO Auto-generated method stub
-		return avaliacaoRepositorio.listarTodas();
+		return avaliacaoRepositorio.listartodos();
 	}
 
 }
