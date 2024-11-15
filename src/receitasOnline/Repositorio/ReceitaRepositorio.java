@@ -46,7 +46,7 @@ public class ReceitaRepositorio implements IReceitaRepositorio {
                         rs.getInt("id_receita"),
                         rs.getString("titulo"),
                         rs.getString("descricao"),
-                        rs.getString("modo_preparo")
+                        rs.getString("modo_preparo"), null
                     );
                 }
             }
@@ -97,7 +97,7 @@ public class ReceitaRepositorio implements IReceitaRepositorio {
 	                    rs.getInt("id_receita"),
 	                    rs.getString("titulo"),
 	                    rs.getString("descricao"),
-	                    rs.getString("modo_preparo")
+	                    rs.getString("modo_preparo"), null
 	                ));
 	            }
 	        } catch (SQLException e) {

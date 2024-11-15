@@ -22,7 +22,7 @@ public class UsuarioRepositorio implements IUsuarioRepositorio {
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getEmail());
             stmt.setString(3, usuario.getSenha());
-            stmt.setDate(4, new java.sql.Date(usuario.getDataCriacao().getTime()));
+            stmt.setDate(4, usuario.getDataCriacao());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -9,7 +9,7 @@ public class ReceitaPrincipal extends Receita {
 
     // Construtor sem ID, para receitas novas (ID será gerado pelo banco)
     public ReceitaPrincipal(String titulo, String descricao, String modoPreparo, List<String> ingredientes, int tempoPreparo) {
-        super(titulo, descricao, modoPreparo, ingredientes); // Chama o construtor da classe Receita
+        super(tempoPreparo, titulo, descricao, modoPreparo, ingredientes); // Chama o construtor da classe Receita
         this.setTempoPreparo(tempoPreparo);
     }
 

@@ -1,5 +1,6 @@
 package receitasOnline.Entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Receita {
@@ -9,12 +10,13 @@ public class Receita {
     private String modoPreparo;
     private List<String> ingredientes;
 
-    // Construtor para novas receitas (sem ID)
-    public Receita(String titulo, String descricao, String modoPreparo, List<String> ingredientes) {
-        this.titulo = titulo;
+    // Construtores existentes
+    public Receita(Integer id, String titulo, String descricao) {
+        this.id = id;
+        this.titulo = titulo; // ou this.nome = nome se você quiser usar 'nome'
         this.descricao = descricao;
-        this.modoPreparo = modoPreparo;
-        this.ingredientes = ingredientes;
+        this.modoPreparo = "";  // Defina um valor padrão se necessário
+        this.ingredientes = new ArrayList<>(); // Defina uma lista vazia por padrão
     }
 
     // Construtor completo, usado quando a receita já tem um ID

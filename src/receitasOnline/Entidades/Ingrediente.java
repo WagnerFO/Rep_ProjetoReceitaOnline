@@ -8,11 +8,6 @@ public class Ingrediente {
     private String nome; // Nome do ingrediente
     private BigDecimal quantidade; // Quantidade padrão do ingrediente
 
-    // Construtor sem ID, para novos ingredientes (ID será gerado pelo banco)
-    public Ingrediente(String nome, BigDecimal quantidade) {
-        this.nome = nome;
-        this.quantidade = quantidade;
-    }
 
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
     public Ingrediente(Integer id, String nome, BigDecimal quantidade) {
