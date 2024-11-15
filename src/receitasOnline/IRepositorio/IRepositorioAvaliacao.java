@@ -7,7 +7,7 @@ import receitasOnline.Entidades.Avaliacao;
 
 public interface IRepositorioAvaliacao{
 
-    void adicinar(Avaliacao avaliacao) throws SQLException;
+    void adicionar(Avaliacao avaliacao) throws SQLException;
     Avaliacao buscar(int id);
     void atualizar (Avaliacao avaliacao) throws SQLException;
     void remover (Avaliacao avaliacao);

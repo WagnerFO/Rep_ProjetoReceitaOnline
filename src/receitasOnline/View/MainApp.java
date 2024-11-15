@@ -1,4 +1,4 @@
-package receitasOnline.Menu;
+package receitasOnline.View;
 
 import java.sql.SQLException;
 
@@ -12,7 +12,7 @@ public class MainApp {
     public static void main(String[] args) throws SQLException {  
         Avaliacao av1 = new Avaliacao(9,"Muito Bom");
 
-        avaliacaoRepSql.adicinar(av1);
+        avaliacaoRepSql.adicionar(av1);
     }
 }
 

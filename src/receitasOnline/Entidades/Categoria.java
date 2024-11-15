@@ -5,6 +5,9 @@ public class Categoria {
     private Integer id; // Identificador único da categoria
     private String nome; // Nome da categoria
 
+    public Categoria(){
+        //Construtor padrão
+    }
     // Construtor sem ID (ID será gerado pelo banco)
     public Categoria(String nome) {
         this.nome = nome;

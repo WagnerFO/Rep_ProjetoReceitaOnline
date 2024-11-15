@@ -1,4 +1,4 @@
-package receitasOnline.Menu;
+package receitasOnline.View;
 
 import java.util.Scanner;
 import java.util.List;
