@@ -42,6 +42,7 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
 
             if (rs.next()) {
                 categoria = new Categoria();
+                categoria.setId(rs.getInt("id"));
                 categoria.setNome(rs.getString("nome"));
             }
         } catch (SQLException e) {
@@ -56,6 +57,7 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
         String sql = "UPDATE categoria SET nome = ?, descricao = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, categoria.getNome());
+            stmt.setInt(3, categoria.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Erro ao alterar Categoria " + e.getMessage());

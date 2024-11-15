@@ -22,7 +22,7 @@ public class RepositorioAvaliacaoSQL implements IRepositorioAvaliacao{
         }
     }
     @Override
-    public void adicinar(Avaliacao avaliacao) throws SQLException {
+    public void adicionar(Avaliacao avaliacao) throws SQLException {
         String sql = "INSERT INTO avaliacao (nota, comentario) VALUES (?, ?)";
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setInt(1,avaliacao.getNota());
@@ -43,6 +43,7 @@ public class RepositorioAvaliacaoSQL implements IRepositorioAvaliacao{
 
             if(rs.next()){
                 avaliacao = new Avaliacao();
+                avaliacao.setId(rs.getInt("id"));
                 avaliacao.setNota(rs.getInt("nota"));
                 avaliacao.setComentario(rs.getString("Comentario"));
             }

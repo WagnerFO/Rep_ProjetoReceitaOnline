@@ -1,16 +1,17 @@
 package receitasOnline.Entidades;
 
-import java.math.BigDecimal;
-
 public class Ingrediente {
     // Atributos da entidade INGREDIENTE
     private Integer id; // Identificador único do ingrediente
     private String nome; // Nome do ingrediente
-    private BigDecimal quantidade; // Quantidade padrão do ingrediente
+    private double quantidade; // Quantidade padrão do ingrediente
 
+    public Ingrediente(){
+        //construtor padrão
+    }
 
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
-    public Ingrediente(Integer id, String nome, BigDecimal quantidade) {
+    public Ingrediente(Integer id, String nome, Double quantidade) {
         this.id = id;
         this.nome = nome;
         this.quantidade = quantidade;
@@ -25,7 +26,7 @@ public class Ingrediente {
         return nome;
     }
 
-    public BigDecimal getQuantidade() {
+    public double getQuantidade() {
         return quantidade;
     }
 
@@ -38,7 +39,7 @@ public class Ingrediente {
         this.nome = nome;
     }
 
-    public void setQuantidade(BigDecimal quantidade) {
+    public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
     }
 

@@ -10,6 +10,10 @@ public class Receita {
     private String modoPreparo;
     private List<String> ingredientes;
 
+    public Receita(){
+        //Construtor padrão
+    }
+
     // Construtores existentes
     public Receita(Integer id, String titulo, String descricao) {
         this.id = id;
