@@ -1,5 +1,7 @@
 package receitasOnline.View;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import receitasOnline.Entidades.Avaliacao;
@@ -119,7 +121,7 @@ public class Main {
     }
 
     // Menu de interação com avaliações
-    private static void menuAvaliacoes() {
+    private static void menuAvaliacoes() throws SQLException {
         System.out.println("Menu de Avaliações:");
         System.out.println("1. Adicionar");
         System.out.println("2. Buscar");
@@ -153,22 +155,23 @@ public class Main {
                 }
                 break;
             case 3:
-                System.out.println("Digite o ID:");
-                id = scanner.nextInt();
+                Avaliacao avaliacao3 = new Avaliacao();
                 System.out.println("Digite a Nova Nota:");
-                nota = scanner.nextInt();
+                avaliacao3.setNota(scanner.nextInt());
                 scanner.nextLine();
                 System.out.println("Digite o Novo Comentário:");
-                comentario = scanner.nextLine();
-                avaliacaoServico.atualizarAvaliacao(new Avaliacao(id, nota, comentario));
+                avaliacao3.setComentario(scanner.nextLine());
+                repositorioAvaliacaoSql.atualizar(avaliacao3);
                 break;
             case 4:
+                Avaliacao avaliacao4 = new Avaliacao();            
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                avaliacaoServico.removerAvaliacao(id);
+                avaliacao4.setId(scanner.nextInt());
+                repositorioAvaliacaoSql.remover(avaliacao4);
                 break;
             case 5:
-                List<Avaliacao> avaliacoes = avaliacaoServico.listarAvaliacoes();
+                ArrayList<Avaliacao> avaliacoes = new ArrayList<>();
+                avaliacoes = repositorioAvaliacaoSql.listarTodos();
                 for (Avaliacao a : avaliacoes) {
                     System.out.println("ID: " + a.getId() + ", Nota: " + a.getNota() + ", Comentário: " + a.getComentario());
                 }
