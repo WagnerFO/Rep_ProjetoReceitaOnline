@@ -7,6 +7,10 @@ public class ReceitaSobremesa extends Receita {
     // Atributos específicos da classe ReceitaSobremesa
     private boolean contemAcucar;
     private String tipoAcucar; // Tipo de açúcar usado na receita, se aplicável
+    
+    public ReceitaSobremesa() {
+    	//Construtor padrão
+    }
 
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
     public ReceitaSobremesa(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria, boolean contemAcucar, String tipoAcucar) {

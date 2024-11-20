@@ -8,6 +8,10 @@ public class ReceitaPrincipal extends Receita {
     private int tempoPreparo; // Tempo de preparo da receita em minutos
     private String dificuldade;
 
+    
+    public ReceitaPrincipal() {
+    	//Construtor padrão
+    }
     // Construtor sem ID, para receitas novas (ID será gerado pelo banco)
     public ReceitaPrincipal(String titulo, String descricao, String modoPreparo, String dificuldade, List<String> ingredientes, Categoria categoria, int tempoPreparo) {
         super(tempoPreparo, titulo, descricao, modoPreparo, ingredientes, categoria); // Chama o construtor da classe Receita
@@ -39,7 +43,7 @@ public class ReceitaPrincipal extends Receita {
         this.tempoPreparo = tempoPreparo;
     }
     
-    public void serDificuldade(String dificuldade) {
+    public void setDificuldade(String dificuldade) {
     	this.dificuldade=dificuldade;
     }
     

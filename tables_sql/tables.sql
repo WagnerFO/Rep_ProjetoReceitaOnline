@@ -32,6 +32,22 @@ CREATE TABLE ingrediente (
 CREATE TABLE receita (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
+    descricao TEXT NOT NULL,
+    modo_preparo TEXT NOT NULL,
+    categoriaId INT NOT NULL,
+    FOREIGN KEY (categoriaId) REFERENCES categoria(id)
+);
+
+CREATE TABLE receita_principal (
+    id INT PRIMARY KEY,
+    dificuldade VARCHAR(50) NOT NULL,
+    tempo_preparo INT NOT NULL,
+    FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
+);
+
+CREATE TABLE receita_sobremesa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
     descricao TEXT,
     modo_preparo TEXT,
     categoriaId INT,

@@ -16,7 +16,7 @@ public class Main {
     private static IRepositorioAvaliacao repositorioAvaliacaoSql = new RepositorioAvaliacaoSQL();
     private static IRepositorioCategoria repositorioCategoriaSql = new RepositorioCategoriaSQL();
     private static IRepositorioIngrediente repositorioIngredienteSql = new RepositorioIngredienteSQL();
-    private static IRepositorioReceita repositorioReceitaSql = new RepositorioReceitaSQL();
+    private static IRepositorioReceitaPrincipal repositorioReceitaSql = new RepositorioReceitaSQL();
     private static IRepositorioUsuario repositorioUsuarioSql = new RepositorioUsuarioSQL();
     
     // Lista encadeada para armazenar receitas
