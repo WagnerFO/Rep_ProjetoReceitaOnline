@@ -4,6 +4,6 @@
 /**
  * 
  */
-module ReceitasOnline {
+module Teste {
 	requires java.sql;
 }

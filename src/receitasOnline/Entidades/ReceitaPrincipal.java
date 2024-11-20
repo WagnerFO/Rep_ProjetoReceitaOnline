@@ -8,14 +8,14 @@ public class ReceitaPrincipal extends Receita {
     private int tempoPreparo; // Tempo de preparo da receita em minutos
 
     // Construtor sem ID, para receitas novas (ID será gerado pelo banco)
-    public ReceitaPrincipal(String titulo, String descricao, String modoPreparo, List<String> ingredientes, int tempoPreparo) {
-        super(tempoPreparo, titulo, descricao, modoPreparo, ingredientes); // Chama o construtor da classe Receita
+    public ReceitaPrincipal(String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria, int tempoPreparo) {
+        super(tempoPreparo, titulo, descricao, modoPreparo, ingredientes, categoria); // Chama o construtor da classe Receita
         this.setTempoPreparo(tempoPreparo);
     }
 
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
-    public ReceitaPrincipal(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, int tempoPreparo) {
-        super(id, titulo, descricao, modoPreparo, ingredientes); // Chama o construtor da classe Receita
+    public ReceitaPrincipal(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria, int tempoPreparo) {
+        super(id, titulo, descricao, modoPreparo, ingredientes, categoria); // Chama o construtor da classe Receita
         this.setTempoPreparo(tempoPreparo);
     }
 

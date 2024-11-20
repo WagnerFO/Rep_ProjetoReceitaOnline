@@ -10,9 +10,10 @@ public class Avaliacao {
     public Avaliacao() {}
 
     // Construtor sem ID, para novas avaliações (ID será gerado pelo banco)
-    public Avaliacao(int nota, String comentario) {
+    public Avaliacao(int nota, String comentario, Integer usuarioId) {
         this.nota = nota;
         this.comentario = comentario;
+        this.usuarioId=usuarioId;
     }
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
     public Avaliacao(Integer id, int nota, String comentario, Integer usuarioId) {
