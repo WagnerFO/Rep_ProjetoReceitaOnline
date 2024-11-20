@@ -13,6 +13,7 @@ public class ReceitaPrincipal extends Receita {
     	//Construtor padrão
     }
     // Construtor sem ID, para receitas novas (ID será gerado pelo banco)
+
     public ReceitaPrincipal(String titulo, String descricao, String modoPreparo, String dificuldade, List<String> ingredientes, Categoria categoria, int tempoPreparo) {
         super(tempoPreparo, titulo, descricao, modoPreparo, ingredientes, categoria); // Chama o construtor da classe Receita
         this.setTempoPreparo(tempoPreparo);

@@ -9,15 +9,33 @@ import java.util.ArrayList;
 
 import receitasOnline.Entidades.Categoria;
 import receitasOnline.Entidades.Receita;
+<<<<<<< HEAD
 import receitasOnline.Entidades.ReceitaSobremesa;
 import receitasOnline.Factory.ConnectionSingleton;
 import receitasOnline.IRepositorio.IRepositorioReceitaSobremesa;
 
+<<<<<<<< HEAD:src/receitasOnline/Repositorio/RepositorioReceitaSobremesaSQL.java
 public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobremesa {
+=======
+import receitasOnline.Factory.ConnectionSingleton;
+import receitasOnline.IRepositorio.IRepositorioReceita;
+
+public class RepositorioReceitaSobremesaSQL implements IRepositorioReceita {
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
 
     private Connection connection;
     
     public RepositorioReceitaSobremesaSQL() {
+<<<<<<< HEAD
+========
+public class RepositorioReceitaPrincipalSQL implements IRepositorioReceita {
+
+    private Connection connection;
+    
+    public RepositorioReceitaPrincipalSQL() {
+>>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962:src/receitasOnline/Repositorio/RepositorioReceitaSQL.java
+=======
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
         try {
             this.connection = ConnectionSingleton.getInstance().conexao;
         } catch (Exception e) {
@@ -26,13 +44,22 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
     }
 
     @Override
+<<<<<<< HEAD
     public void adicionar(ReceitaSobremesa receita) throws SQLException, InterruptedException {
         String insertReceitaSQL = "INSERT INTO receita (titulo, descricao, modo_preparo, categoriaId) VALUES (?, ?, ?, ?)";
         String insertReceitaSobremesaSQL = "INSERT INTO receita_sobremesa (id, contem_acucar, tipo_acucar) VALUES (?, ?, ?)";
+=======
+    public void adicionar(Receita receita) throws SQLException, InterruptedException {
+        String insertReceitaSQL = "INSERT INTO receita (titulo, descricao, modo_preparo, categoriaId) VALUES (?, ?, ?, ?)";
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
         String selectIngredienteSQL = "SELECT id FROM ingrediente WHERE nome = ?";
         String insertIngredienteSQL = "INSERT INTO ingrediente (nome) VALUES (?)";
         String insertReceitaIngredienteSQL = "INSERT INTO receita_ingrediente (id_receita, id_ingrediente) VALUES (?, ?)";
         
+<<<<<<< HEAD
+=======
+        // Utilizando a conexão existente, sem criar uma nova
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
         try (Connection connection = ConnectionSingleton.getInstance().conexao) {
             connection.setAutoCommit(false); // Início da transação
             
@@ -51,6 +78,7 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
                     throw new SQLException("Erro ao obter o ID da receita inserida.");
                 }
                 
+<<<<<<< HEAD
                 try (PreparedStatement stmtSobremesa = connection.prepareStatement(insertReceitaSobremesaSQL)) {
                     stmtSobremesa.setInt(1, idReceita);
                     stmtSobremesa.setBoolean(2, receita.isContemAcucar());
@@ -61,12 +89,22 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
                 for (String nomeIngrediente : receita.getIngredientes()) {
                     int idIngrediente;
                     
+=======
+                for (String nomeIngrediente : receita.getIngredientes()) {
+                    int idIngrediente;
+                    
+                    // Verificar se o ingrediente já existe
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
                     try (PreparedStatement selectStmt = connection.prepareStatement(selectIngredienteSQL)) {
                         selectStmt.setString(1, nomeIngrediente);
                         ResultSet rsIngrediente = selectStmt.executeQuery();
                         if (rsIngrediente.next()) {
                             idIngrediente = rsIngrediente.getInt("id");
                         } else {
+<<<<<<< HEAD
+=======
+                            // Inserir ingrediente, caso não exista
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
                             try (PreparedStatement insertStmt = connection.prepareStatement(insertIngredienteSQL, Statement.RETURN_GENERATED_KEYS)) {
                                 insertStmt.setString(1, nomeIngrediente);
                                 insertStmt.executeUpdate();
@@ -79,6 +117,10 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
                             }
                         }
                         
+<<<<<<< HEAD
+=======
+                        // Inserir na tabela de relacionamento
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
                         try (PreparedStatement insertReceitaIngredienteStmt = connection.prepareStatement(insertReceitaIngredienteSQL)) {
                             insertReceitaIngredienteStmt.setInt(1, idReceita);
                             insertReceitaIngredienteStmt.setInt(2, idIngrediente);
@@ -101,15 +143,22 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
     
 
     @Override
+<<<<<<< HEAD
     public ReceitaSobremesa buscar(int id) {
         String sql = "SELECT * FROM receita WHERE id = ?";
         ReceitaSobremesa receita = null;
+=======
+    public Receita buscar(int id) {
+        String sql = "SELECT * FROM receita WHERE id = ?";
+        Receita receita = null;
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+<<<<<<< HEAD
                 receita = new ReceitaSobremesa();  // Instanciando ReceitaSobremesa
                 receita.setId(rs.getInt("id"));
                 receita.setTitulo(rs.getString("titulo"));
@@ -135,14 +184,35 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
             }
         } catch (SQLException e) {
             System.out.println("Erro ao buscar Receita: " + e.getMessage());
+=======
+                receita = new Receita();
+                receita.setId(rs.getInt("id"));
+                receita.setTitulo(rs.getString("titulo"));
+                receita.setDescricao(rs.getString("descricao"));
+                receita.setModoPreparo(rs.getString("modoPreparo"));
+
+                // Agora buscamos a categoria associada
+                int categoriaId = rs.getInt("categoriaId");
+                Categoria categoria = new Categoria();
+                categoria.setId(categoriaId);
+                receita.setCategoria(categoria);  // Associa a categoria à receita
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar Receita " + e.getMessage());
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
             e.printStackTrace();
         }
         return receita;
     }
 
+<<<<<<< HEAD
 
     @Override
     public ArrayList<ReceitaSobremesa> buscarReceitasPorIngrediente(String nomeIngrediente) throws SQLException, InterruptedException {
+=======
+    @Override
+    public ArrayList<Receita> buscarReceitasPorIngrediente(String nomeIngrediente) throws SQLException, InterruptedException {
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
     String sql = """
         SELECT r.id, r.titulo, r.descricao, r.modo_preparo
         FROM receita r
@@ -170,7 +240,11 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
 }
 
     @Override
+<<<<<<< HEAD
     public void atualizar(ReceitaSobremesa receita) throws SQLException {
+=======
+    public void atualizar(Receita receita) throws SQLException {
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
         String sql = "UPDATE receita SET titulo = ?, descricao = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, receita.getTitulo());
@@ -184,7 +258,11 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
     }
 
     @Override
+<<<<<<< HEAD
     public void remover(ReceitaSobremesa receita) {
+=======
+    public void remover(Receita receita) {
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
         String sql = "DELETE FROM receita WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, receita.getId());
@@ -195,7 +273,11 @@ public class RepositorioReceitaSobremesaSQL implements IRepositorioReceitaSobrem
     }
 
     @Override
+<<<<<<< HEAD
     public ArrayList<ReceitaSobremesa> listarTodos() throws SQLException {
+=======
+    public ArrayList<Receita> listarTodos() throws SQLException {
+>>>>>>> d3b1e38dbf6995f92752d62ef3f936ab3b7cb962
         String sql = "SELECT * FROM receita";
         ArrayList<Receita> receitas = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(sql);
