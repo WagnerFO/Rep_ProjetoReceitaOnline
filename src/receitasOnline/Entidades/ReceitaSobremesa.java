@@ -12,6 +12,12 @@ public class ReceitaSobremesa extends Receita {
     	//Construtor padrão
     }
 
+    public ReceitaSobremesa(String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria, boolean contemAcucar, String tipoAcucar) {
+        super(titulo, descricao, modoPreparo, ingredientes, categoria);
+        this.contemAcucar = contemAcucar;
+        this.tipoAcucar = contemAcucar ? tipoAcucar : null;
+    }
+
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
     public ReceitaSobremesa(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria, boolean contemAcucar, String tipoAcucar) {
         super(id, titulo, descricao, modoPreparo, ingredientes, categoria);

@@ -12,10 +12,10 @@ public class ReceitaPrincipal extends Receita {
     public ReceitaPrincipal() {
     	//Construtor padrão
     }
+    
     // Construtor sem ID, para receitas novas (ID será gerado pelo banco)
-
     public ReceitaPrincipal(String titulo, String descricao, String modoPreparo, String dificuldade, List<String> ingredientes, Categoria categoria, int tempoPreparo) {
-        super(tempoPreparo, titulo, descricao, modoPreparo, ingredientes, categoria); // Chama o construtor da classe Receita
+        super(titulo, descricao, modoPreparo, ingredientes, categoria); // Chama o construtor da classe Receita
         this.setTempoPreparo(tempoPreparo);
         this.dificuldade=dificuldade;
     }
@@ -51,6 +51,24 @@ public class ReceitaPrincipal extends Receita {
 
     @Override
     public String toString() {
-        return super.toString() + ", Tempo de Preparo: " + tempoPreparo + " minutos e sua dificuldade é: "+dificuldade;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Receita Principal [ID: ").append(getId())
+          .append(", Título: ").append(getTitulo())
+          .append(", Descrição: ").append(getDescricao())
+          .append(", Modo de Preparo: ").append(getModoPreparo())
+          .append(", Dificuldade: ").append(dificuldade)
+          .append(", Tempo de Preparo: ").append(tempoPreparo).append(" minutos")
+          .append(", Categoria: ").append(getCategoria() != null ? getCategoria().getNome() : "Categoria não especificada")
+          .append(", Ingredientes: ");
+        
+        if (getIngredientes() != null && !getIngredientes().isEmpty()) {
+            sb.append(String.join(", ", getIngredientes())); // Converte a lista de ingredientes em uma string
+        } else {
+            sb.append("Nenhum ingrediente especificado");
+        }
+        
+        sb.append("]");
+        return sb.toString();
     }
+
 }

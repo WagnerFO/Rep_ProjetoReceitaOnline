@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import receitasOnline.Entidades.Categoria;
-import receitasOnline.Entidades.Receita;
 import receitasOnline.Entidades.ReceitaPrincipal;
 import receitasOnline.Factory.ConnectionSingleton;
 import receitasOnline.IRepositorio.IRepositorioReceitaPrincipal;
@@ -182,6 +181,12 @@ public class RepositorioReceitaPrincipalSQL implements IRepositorioReceitaPrinci
 
     @Override
     public void atualizar(ReceitaPrincipal receita) throws SQLException {
+    	ReceitaPrincipal receitaPExistente = buscar(receita.getId());
+
+    	if (receitaPExistente == null) {
+    	    System.out.println("Erro: Ingrediente com o ID " + receita.getId() + " não encontrada.");
+    	    return; // Interrompe a execução se o ID não existir
+    	}
         String sql = "UPDATE receita SET titulo = ?, descricao = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, receita.getTitulo());
@@ -196,6 +201,12 @@ public class RepositorioReceitaPrincipalSQL implements IRepositorioReceitaPrinci
 
     @Override
     public void remover(ReceitaPrincipal receita) {
+    	ReceitaPrincipal receitaPExistente = buscar(receita.getId());
+
+    	if (receitaPExistente == null) {
+    	    System.out.println("Erro: Ingrediente com o ID " + receita.getId() + " não encontrada.");
+    	    return; // Interrompe a execução se o ID não existir
+    	}
         String sql = "DELETE FROM receita WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, receita.getId());

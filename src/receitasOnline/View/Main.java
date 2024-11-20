@@ -2,10 +2,15 @@ package receitasOnline.View;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import receitasOnline.Entidades.Avaliacao;
 import receitasOnline.Entidades.Categoria;
+import receitasOnline.Entidades.Ingrediente;
+import receitasOnline.Entidades.Receita;
+import receitasOnline.Entidades.ReceitaPrincipal;
+import receitasOnline.Entidades.ReceitaSobremesa;
 import receitasOnline.Entidades.Usuario;
 import receitasOnline.IRepositorio.*;
 import receitasOnline.Repositorio.*;
@@ -26,7 +31,7 @@ public class Main {
     //private static ListaEncadeada<Receita> listaReceitas = new ListaEncadeada<>();
 
     // Método principal que inicia o programa e exibe o menu principal
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, InterruptedException {
         while (true) {
             // Exibe o menu principal
             System.out.println("Menu:");
@@ -227,68 +232,238 @@ public class Main {
     }
 
     // Menu de interação com receitas
-    private static void menuReceitas() {
-        System.out.println("Menu de Receitas:");
-        System.out.println("1. Adicionar");
-        System.out.println("2. Buscar");
-        System.out.println("3. Atualizar");
-        System.out.println("4. Remover");
-        System.out.println("5. Listar todas");
+    private static void menuReceitas() throws SQLException, InterruptedException {
+    	System.out.println("Digite 1 para Receita Principal e 2 para Receita Sobremesa: ");
+    	int r = scanner.nextInt();
+    	
+    	if(r==1) {
+    		System.out.println("Menu de Receita Principal:");
+            System.out.println("1. Adicionar");
+            System.out.println("2. Buscar");
+            System.out.println("3. Atualizar");
+            System.out.println("4. Remover");
+            System.out.println("5. Listar todas");
 
-        int opcao = scanner.nextInt();
-        scanner.nextLine();
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+            switch (opcao) {
+                case 1:
+                	System.out.println("Digite o título da receita:");
+                    String titulo = scanner.nextLine();
+                    System.out.println("Digite a descrição da receita:");
+                    String descricao = scanner.nextLine();
+                    System.out.println("Digite o modo de preparo:");
+                    String modoPreparo = scanner.nextLine();
+                    System.out.println("Digite a dificuldade da receita:");
+                    String dificuldade = scanner.nextLine();
+                    System.out.println("Digite o ID da categoria:");
+                    Categoria categoria = new Categoria();
+                    categoria.setId(scanner.nextInt());
+                    scanner.nextLine(); // Consumir a quebra de linha após o int
+                    System.out.println("Digite o tempo de preparo (em minutos):");
+                    int tempoPreparo = scanner.nextInt();
+                    scanner.nextLine(); // Consumir a quebra de linha após o int
+                    System.out.println("Digite os ingredientes separados por vírgula:");
+                    String ingredientesInput = scanner.nextLine();
+                    
+                    // Converter a string de ingredientes em uma lista
+                    List<String> ingredientes = new ArrayList<>();
+                    for (String ingrediente : ingredientesInput.split(",")) {
+                        ingredientes.add(ingrediente.trim()); // Remover espaços extras antes de adicionar
+                    }
+                    
+                    ReceitaPrincipal receitaP = new ReceitaPrincipal(titulo, descricao, modoPreparo, dificuldade, ingredientes, categoria, tempoPreparo );
+                    
+                    try {
+                    	repositorioReceitaPrincipalSql.adicionar(receitaP);
+                    	System.out.println("Receita adicionada com Sucesso!");
+                    }catch(SQLException e) {
+                    	System.out.println("Erro ao Adicionar Receita: "+e.getMessage());
+                    }
+                    break;
+                case 2:
+                	ReceitaPrincipal receitaP2 = new ReceitaPrincipal();
+                    System.out.println("Digite o ID:");
+                    receitaP2.setId(scanner.nextInt());
+                    repositorioReceitaPrincipalSql.buscar(receitaP2.getId());
+                    if (receitaP2 != null) {
+                        System.out.println("Receita: " + receitaP2.getTitulo() + ", Descrição: " + receitaP2.getDescricao());
+                    }
+                    break;
+                case 3:
+                    System.out.println("Digite o ID:");
+                    int idRP = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    System.out.println("Digite o título da receita:");
+                    String titulo3 = scanner.nextLine();
+                    System.out.println("Digite a descrição da receita:");
+                    String descricao3 = scanner.nextLine();
+                    System.out.println("Digite o modo de preparo:");
+                    String modoPreparo3 = scanner.nextLine();
+                    System.out.println("Digite a dificuldade da receita:");
+                    String dificuldade3 = scanner.nextLine();
+                    System.out.println("Digite o ID da categoria:");
+                    Categoria categoria3 = new Categoria();
+                    categoria3.setId(scanner.nextInt());
+                    scanner.nextLine(); // Consumir a quebra de linha após o int
+                    System.out.println("Digite o tempo de preparo (em minutos):");
+                    int tempoPreparo3 = scanner.nextInt();
+                    scanner.nextLine(); // Consumir a quebra de linha após o int
+                    System.out.println("Digite os ingredientes separados por vírgula:");
+                    String ingredientesInput3 = scanner.nextLine();
+                    
+                    // Converter a string de ingredientes em uma lista
+                    List<String> ingredientes3 = new ArrayList<>();
+                    for (String ingrediente : ingredientesInput3.split(",")) {
+                        ingredientes3.add(ingrediente.trim()); // Remover espaços extras antes de adicionar
+                    }
+                    ReceitaPrincipal receitaP3 = new ReceitaPrincipal(idRP, titulo3, descricao3, modoPreparo3, dificuldade3, ingredientes3, categoria3, tempoPreparo3 );
+                    
+                    try {
+                    	repositorioReceitaPrincipalSql.atualizar(receitaP3);
+                    }catch(SQLException e) {
+                    	System.out.println("Erro ao atualizar Receita: "+e.getMessage());
+                    }
+                    break;
+                case 4:
+                    System.out.println("Digite o ID:");
+                    ReceitaPrincipal receitaP4 = new ReceitaPrincipal();
+                    receitaP4.setId(scanner.nextInt());
+                    repositorioReceitaPrincipalSql.remover(receitaP4);
+                    break;
+                case 5:
+                	ArrayList<ReceitaPrincipal> receitasP = new ArrayList<>();
+                	receitasP = repositorioReceitaPrincipalSql.listarTodos();
+                    for (Receita rP : receitasP) {
+                        System.out.println(rP.toString());
+                    }
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+            
+    	}else if(r==2) {
+    		System.out.println("Menu de Receitas Sobremesa:");
+            System.out.println("1. Adicionar");
+            System.out.println("2. Buscar");
+            System.out.println("3. Atualizar");
+            System.out.println("4. Remover");
+            System.out.println("5. Listar todas");
 
-        switch (opcao) {
-            case 1:
-                System.out.println("Digite o ID:");
-                int id = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Digite o Nome:");
-                String nome = scanner.nextLine();
-                System.out.println("Digite a Descrição:");
-                String descricao = scanner.nextLine();
-                Receita novaReceita = new Receita(id, nome, descricao);
-                receitaServico.adicionarReceita(novaReceita);
-                listaReceitas.adicionar(novaReceita); // Armazenar na lista encadeada
-                break;
-            case 2:
-                System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                Receita receita = receitaServico.buscarReceita(id);
-                if (receita != null) {
-                    System.out.println("Receita: " + receita.getNome() + ", Descrição: " + receita.getDescricao());
-                } else {
-                    System.out.println("Receita não encontrada.");
-                }
-                break;
-            case 3:
-                System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Digite o Novo Nome:");
-                nome = scanner.nextLine();
-                System.out.println("Digite a Nova Descrição:");
-                descricao = scanner.nextLine();
-                receitaServico.atualizarReceita(new Receita(id, nome, descricao));
-                break;
-            case 4:
-                System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                receitaServico.removerReceita(id);
-                break;
-            case 5:
-                List<Receita> receitas = receitaServico.listarReceitas();
-                for (Receita r : receitas) {
-                    System.out.println("ID: " + r.getId() + ", Nome: " + r.getNome() + ", Descrição: " + r.getDescricao());
-                }
-                break;
-            default:
-                System.out.println("Opção inválida.");
-        }
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                	System.out.println("Digite o título da receita:");
+                    String titulo = scanner.nextLine();
+                    System.out.println("Digite a descrição da receita:");
+                    String descricao = scanner.nextLine();
+                    System.out.println("Digite o modo de preparo:");
+                    String modoPreparo = scanner.nextLine();
+                    System.out.println("Essa Receita possui acucar? ");
+                    boolean contemAcucar = scanner.nextBoolean();
+                    String tipoAcucar=null;
+                    if(contemAcucar == true) {
+                    	System.out.println("Digite o tipo: ");
+                    	tipoAcucar = scanner.nextLine();
+                    }
+                    System.out.println("Digite o ID da categoria:");
+                    Categoria categoria = new Categoria();
+                    categoria.setId(scanner.nextInt());
+                    scanner.nextLine(); // Consumir a quebra de linha após o int
+                    System.out.println("Digite os ingredientes separados por vírgula:");
+                    String ingredientesInput = scanner.nextLine();
+                    
+                    // Converter a string de ingredientes em uma lista
+                    List<String> ingredientes = new ArrayList<>();
+                    for (String ingrediente : ingredientesInput.split(",")) {
+                        ingredientes.add(ingrediente.trim()); // Remover espaços extras antes de adicionar
+                    }
+                    
+                    ReceitaSobremesa receitaS = new ReceitaSobremesa (titulo, descricao, modoPreparo, ingredientes, categoria, contemAcucar, tipoAcucar);
+                    
+                    try {
+                    	repositorioReceitaSobremesaSql.adicionar(receitaS);
+                    	System.out.println("Receita adicionada com Sucesso!");
+                    }catch(SQLException e) {
+                    	System.out.println("Erro ao Adicionar Receita: "+e.getMessage());
+                    }
+                    break;
+                case 2:
+                	ReceitaSobremesa receitaS2 = new ReceitaSobremesa();
+                    System.out.println("Digite o ID:");
+                    receitaS2.setId(scanner.nextInt());
+                    repositorioReceitaSobremesaSql.buscar(receitaS2.getId());
+                    if (receitaS2 != null) {
+                        System.out.println("Receita: " + receitaS2.getTitulo() + ", Descrição: " + receitaS2.getDescricao());
+                    } 
+                    break;
+                case 3:
+                    System.out.println("Digite o ID:");
+                    int idRS = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    System.out.println("Digite o título da receita:");
+                    String titulo3 = scanner.nextLine();
+                    System.out.println("Digite a descrição da receita:");
+                    String descricao3 = scanner.nextLine();
+                    System.out.println("Digite o modo de preparo:");
+                    String modoPreparo3 = scanner.nextLine();
+                    System.out.println("Essa Receita possui acucar? ");
+                    boolean contemAcucar3 = scanner.nextBoolean();
+                    String tipoAcucar3=null;
+                    if(contemAcucar3 == true) {
+                    	System.out.println("Digite o tipo: ");
+                    	tipoAcucar3 = scanner.nextLine();
+                    }
+                    System.out.println("Digite o ID da categoria:");
+                    Categoria categoria3 = new Categoria();
+                    categoria3.setId(scanner.nextInt());
+                    scanner.nextLine(); // Consumir a quebra de linha após o int
+                    System.out.println("Digite os ingredientes separados por vírgula:");
+                    String ingredientesInput3 = scanner.nextLine();
+                    
+                    // Converter a string de ingredientes em uma lista
+                    List<String> ingredientes3 = new ArrayList<>();
+                    for (String ingrediente3 : ingredientesInput3.split(",")) {
+                        ingredientes3.add(ingrediente3.trim()); // Remover espaços extras antes de adicionar
+                    }
+                    
+                    ReceitaSobremesa receitaS3 = new ReceitaSobremesa (idRS, titulo3, descricao3, modoPreparo3, ingredientes3, categoria3, contemAcucar3, tipoAcucar3);
+                    
+                    try {
+                    	repositorioReceitaSobremesaSql.atualizar(receitaS3);
+                    	System.out.println("Receita Atualizada com Sucesso.");
+                    }catch(SQLException e) {
+                    	System.out.println("Erro ao atualizar Receita: "+e.getMessage());
+                    }
+                    break;
+                case 4:
+                    System.out.println("Digite o ID:");
+                    ReceitaSobremesa receitaS4 = new ReceitaSobremesa();
+                    receitaS4.setId(scanner.nextInt());
+                    repositorioReceitaSobremesaSql.remover(receitaS4);
+                    break;
+                case 5:
+                	ArrayList<ReceitaSobremesa> receitasS = new ArrayList<>();
+                	receitasS = repositorioReceitaSobremesaSql.listarTodos();
+                    for (Receita rS : receitasS) {
+                        System.out.println(rS.toString());
+                    }
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+
+    	}else {
+    		System.out.println("Opção Inválida! ");
+    	}
     }
 
     // Menu de interação com ingredientes
-    private static void menuIngredientes() {
+    private static void menuIngredientes() throws SQLException {
         System.out.println("Menu de Ingredientes:");
         System.out.println("1. Adicionar");
         System.out.println("2. Buscar");
@@ -301,38 +476,59 @@ public class Main {
 
         switch (opcao) {
             case 1:
-                System.out.println("Digite o ID:");
-                int id = scanner.nextInt();
-                System.out.println("Digite o Nome:");
+                System.out.println("Digite o Nome: ");
                 String nome = scanner.nextLine();
-                ingredienteServico.adicionarIngrediente(new Ingrediente(id, nome));
+                System.out.println("Digite a quantidade: ");
+                double quantidade = scanner.nextDouble();
+                
+                Ingrediente ingrediente1 = new Ingrediente(nome, quantidade);
+                try {
+                	repositorioIngredienteSql.adicionar(ingrediente1);
+                	System.out.println("Ingrediente adicionado com sucesso!");
+                }catch(SQLException e) {
+                	System.out.println("Erro ao adicionar o ingrediente: " + e.getMessage());
+            	}
                 break;
             case 2:
+            	Ingrediente ingrediente2 = new Ingrediente();
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                Ingrediente ingrediente = ingredienteServico.buscarIngrediente(id);
-                if (ingrediente != null) {
-                    System.out.println("Ingrediente: " + ingrediente.getNome());
-                } else {
-                    System.out.println("Ingrediente não encontrado.");
+                ingrediente2.setId(scanner.nextInt());
+                repositorioIngredienteSql.buscar(ingrediente2.getId());
+                if (ingrediente2 != null) {
+                    System.out.println("Ingrediente: " + ingrediente2.getNome());
                 }
                 break;
             case 3:
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
+                int id3 = scanner.nextInt();
+                System.out.println(); //Limpar o buffer
+                
                 System.out.println("Digite o Novo Nome:");
-                nome = scanner.nextLine();
-                ingredienteServico.atualizarIngrediente(new Ingrediente(id, nome));
+                String nome3 = scanner.nextLine();
+                System.out.println("Digite a quantidade: ");
+                double quantidade3 = scanner.nextDouble();
+                
+                // Criar o objeto Ingrediente 
+                Ingrediente ingrediente3 = new Ingrediente(id3, nome3, quantidade3);
+                
+                //Chamar o método para atualizar
+                try {
+                	repositorioIngredienteSql.atualizar(ingrediente3);
+                }catch(SQLException e) {
+                	System.out.println("Erro ao atualizar o ingrediente: " + e.getMessage());
+                }
                 break;
             case 4:
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                ingredienteServico.removerIngrediente(id);
+                Ingrediente ingrediente4 = new Ingrediente();
+                ingrediente4.setId(scanner.nextInt());
+                repositorioIngredienteSql.remover(ingrediente4);
                 break;
             case 5:
-                List<Ingrediente> ingredientes = ingredienteServico.listarIngredientes();
+            	ArrayList<Ingrediente> ingredientes = new ArrayList<>();
+            	ingredientes = repositorioIngredienteSql.listarTodos();
                 for (Ingrediente i : ingredientes) {
-                    System.out.println("ID: " + i.getId() + ", Nome: " + i.getNome());
+                    System.out.println(i.toString());
                 }
                 break;
             default:
@@ -341,7 +537,7 @@ public class Main {
     }
 
     // Menu de interação com categorias
-    private static void menuCategorias() {
+    private static void menuCategorias() throws SQLException {
         System.out.println("Menu de Categorias:");
         System.out.println("1. Adicionar");
         System.out.println("2. Buscar");
@@ -371,20 +567,34 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
+                int id3 = scanner.nextInt();
+                scanner.nextLine(); // Limpar o buffer
+                
                 System.out.println("Digite o Novo Nome:");
-                nome = scanner.nextLine();
-                categoriaServico.atualizarCategoria(new Categoria(id, nome));
+                String nome3 = scanner.nextLine();
+                
+                //Criar o objeto Categoria
+                Categoria categoria3 = new Categoria(id3, nome3);
+                
+                
+                //Chamar o método para atualizar
+                try {
+                	repositorioCategoriaSql.atualizar(categoria3);
+                }catch(SQLException e) {
+                	System.out.println("Erro ao atualizar a categoria: "+e.getMessage());
+                }
                 break;
             case 4:
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                categoriaServico.removerCategoria(id);
+                Categoria categoria4 = new Categoria();
+                categoria4.setId(scanner.nextInt());
+                repositorioCategoriaSql.remover(categoria4);
                 break;
             case 5:
-                List<Categoria> categorias = categoriaServico.listarCategorias();
+            	ArrayList<Categoria> categorias = new ArrayList<>();
+            	categorias = repositorioCategoriaSql.listarTodos();
                 for (Categoria c : categorias) {
-                    System.out.println("ID: " + c.getId() + ", Nome: " + c.getNome());
+                    System.out.println(c.toString());
                 }
                 break;
             default:
@@ -392,9 +602,9 @@ public class Main {
         }
     }
 
-    // Método para exibir todas as receitas armazenadas na lista encadeada
+    /*/ Método para exibir todas as receitas armazenadas na lista encadeada
     private static void exibirReceitas() {
         System.out.println("Receitas Armazenadas:");
         listaReceitas.listar(); // Chama o método listar da lista encadeada
-    }
+    }*/
 }

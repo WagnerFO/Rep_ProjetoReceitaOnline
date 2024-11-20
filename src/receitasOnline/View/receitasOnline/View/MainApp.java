@@ -3,7 +3,6 @@ package receitasOnline.View;
 import java.sql.SQLException;
 
 import receitasOnline.Entidades.Avaliacao;
-import receitasOnline.Entidades.Usuario;
 import receitasOnline.IRepositorio.IRepositorioAvaliacao;
 import receitasOnline.IRepositorio.IRepositorioUsuario;
 import receitasOnline.Repositorio.RepositorioAvaliacaoSQL;

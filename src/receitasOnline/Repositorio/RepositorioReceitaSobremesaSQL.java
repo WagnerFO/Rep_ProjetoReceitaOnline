@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import receitasOnline.Entidades.Categoria;
-import receitasOnline.Entidades.Receita;
-
 import receitasOnline.Entidades.ReceitaSobremesa;
 import receitasOnline.Factory.ConnectionSingleton;
 import receitasOnline.IRepositorio.IRepositorioReceitaSobremesa;

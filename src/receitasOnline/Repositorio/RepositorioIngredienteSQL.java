@@ -56,6 +56,13 @@ public class RepositorioIngredienteSQL implements IRepositorioIngrediente {
 
     @Override
     public void atualizar(Ingrediente ingrediente) throws SQLException {
+    	Ingrediente ingredienteExistente = buscar(ingrediente.getId());
+
+    	if (ingredienteExistente == null) {
+    	    System.out.println("Erro: Ingrediente com o ID " + ingrediente.getId() + " não encontrada.");
+    	    return; // Interrompe a execução se o ID não existir
+    	}
+    	
         String sql = "UPDATE ingrediente SET nome = ?, quantidade = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, ingrediente.getNome());
@@ -70,6 +77,13 @@ public class RepositorioIngredienteSQL implements IRepositorioIngrediente {
 
     @Override
     public void remover(Ingrediente ingrediente) {
+    	Ingrediente ingredienteExistente = buscar(ingrediente.getId());
+
+    	if (ingredienteExistente == null) {
+    	    System.out.println("Erro: Ingrediente com o ID " + ingrediente.getId() + " não encontrada.");
+    	    return; // Interrompe a execução se o ID não existir
+    	}
+    	
         String sql = "DELETE FROM ingrediente WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, ingrediente.getId());

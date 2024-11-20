@@ -3,8 +3,6 @@ package receitasOnline.IRepositorio;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import receitasOnline.Entidades.Receita;
-import receitasOnline.Entidades.ReceitaPrincipal;
 import receitasOnline.Entidades.ReceitaSobremesa;
 
 public interface IRepositorioReceitaSobremesa {

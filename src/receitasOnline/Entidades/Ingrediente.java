@@ -9,6 +9,11 @@ public class Ingrediente {
     public Ingrediente(){
         //construtor padrão
     }
+    
+    public Ingrediente(String nome, double quantidade) {
+    	this.nome=nome;
+    	this.quantidade=quantidade;
+    }
 
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
     public Ingrediente(Integer id, String nome, Double quantidade) {

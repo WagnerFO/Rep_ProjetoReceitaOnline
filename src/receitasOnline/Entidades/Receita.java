@@ -16,8 +16,7 @@ public abstract class  Receita {
     }
 
     // Construtores existentes
-    public Receita(Integer id, String titulo, String descricao, Categoria categoria) {
-        this.id = id;
+    public Receita(String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria) {
         this.titulo = titulo; // ou this.nome = nome se você quiser usar 'nome'
         this.descricao = descricao;
         this.modoPreparo = "";  // Defina um valor padrão se necessário
