@@ -65,6 +65,13 @@ public class RepositorioUsuarioSQL implements IRepositorioUsuario {
 
     @Override
     public void atualizar(Usuario usuario) throws SQLException {
+    	// Verificar se o usuário existe antes de tentar atualizar
+        Usuario usuarioExistente = buscar(usuario.getId());
+        
+        if (usuarioExistente == null) {
+            System.out.println("Erro: Usuário com o ID " + usuario.getId() + " não encontrado.");
+            return; // Interrompe a execução se o ID não existir
+        }
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, rua = ?, numero = ?, cidade = ?, estado = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, usuario.getNome());
@@ -83,6 +90,13 @@ public class RepositorioUsuarioSQL implements IRepositorioUsuario {
 
     @Override
     public void remover(Usuario usuario) {
+    	// Verificar se o usuário existe antes de tentar atualizar
+        Usuario usuarioExistente = buscar(usuario.getId());
+        
+        if (usuarioExistente == null) {
+            System.out.println("Erro: Usuário com o ID " + usuario.getId() + " não encontrado.");
+            return; // Interrompe a execução se o ID não existir
+        }
         String sql = "DELETE FROM usuario WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, usuario.getId());

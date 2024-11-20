@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import receitasOnline.Entidades.Avaliacao;
+import receitasOnline.Entidades.Categoria;
+import receitasOnline.Entidades.Usuario;
 import receitasOnline.IRepositorio.*;
 import receitasOnline.Repositorio.*;
 
@@ -16,7 +18,8 @@ public class Main {
     private static IRepositorioAvaliacao repositorioAvaliacaoSql = new RepositorioAvaliacaoSQL();
     private static IRepositorioCategoria repositorioCategoriaSql = new RepositorioCategoriaSQL();
     private static IRepositorioIngrediente repositorioIngredienteSql = new RepositorioIngredienteSQL();
-    private static IRepositorioReceitaPrincipal repositorioReceitaSql = new RepositorioReceitaSQL();
+    private static IRepositorioReceitaPrincipal repositorioReceitaPrincipalSql = new RepositorioReceitaPrincipalSQL();
+    private static IRepositorioReceitaSobremesa repositorioReceitaSobremesaSql = new RepositorioReceitaSobremesaSQL();
     private static IRepositorioUsuario repositorioUsuarioSql = new RepositorioUsuarioSQL();
     
     // Lista encadeada para armazenar receitas
@@ -64,7 +67,7 @@ public class Main {
     }
 
     // Menu de interação com usuários
-    private static void menuUsuarios() {
+    private static void menuUsuarios() throws SQLException {
         System.out.println("Menu de Usuários:");
         System.out.println("1. Adicionar");
         System.out.println("2. Buscar");
@@ -79,40 +82,84 @@ public class Main {
         // Executa a ação correspondente à opção escolhida
         switch (opcao) {
             case 1:
-                System.out.println("Digite o ID:");
-                int id = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Digite o Nome:");
-                String nome = scanner.nextLine();
-                usuarioServico.adicionarUsuario(new Usuario(id, nome));
+            	System.out.println("Digite o Nome:");
+            	String nome = scanner.nextLine();
+            	System.out.println("Digite o Email:");
+            	String email = scanner.nextLine();
+            	System.out.println("Digite a Senha:");
+            	String senha = scanner.nextLine();
+            	System.out.println("Digite a Rua:");
+            	String rua = scanner.nextLine();
+            	System.out.println("Digite o Número:");
+            	int numero = scanner.nextInt();
+            	scanner.nextLine(); // Limpar o buffer novamente
+            	System.out.println("Digite a Cidade:");
+            	String cidade = scanner.nextLine();
+            	System.out.println("Digite o Estado:");
+            	String estado = scanner.nextLine();
+
+            	Usuario usuario = new Usuario(nome, email, senha, rua, numero, cidade, estado);
+
+            	try {
+            	    repositorioUsuarioSql.adicionar(usuario);
+            	    System.out.println("Usuário adicionado com sucesso!");
+            	} catch (SQLException e) {
+            	    System.out.println("Erro ao adicionar o usuário: " + e.getMessage());
+            	}
                 break;
             case 2:
+            	Usuario usuario2 = new Usuario();
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                Usuario usuario = usuarioServico.buscarUsuario(id);
-                if (usuario != null) {
-                    System.out.println("Usuário: " + usuario.getNome());
-                } else {
-                    System.out.println("Usuário não encontrado.");
+                usuario2.setId(scanner.nextInt());
+                repositorioUsuarioSql.buscar(usuario2.getId());
+                if (usuario2 != null) {
+                    System.out.println("Usuário: " + usuario2.getNome());
                 }
                 break;
             case 3:
-                System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Digite o Novo Nome:");
-                nome = scanner.nextLine();
-                usuarioServico.atualizarUsuario(new Usuario(id, nome));
+            	// Solicitar o ID do usuário
+            	System.out.println("Digite o ID do usuário a ser atualizado:");
+            	int id1 = scanner.nextInt();
+            	scanner.nextLine();  // Limpar o buffer
+
+            	// Solicitar os novos dados
+            	System.out.println("Digite o Nome:");
+            	String nome1 = scanner.nextLine();
+            	System.out.println("Digite o Email:");
+            	String email1 = scanner.nextLine();
+            	System.out.println("Digite a Senha:");
+            	String senha1 = scanner.nextLine();
+            	System.out.println("Digite a Rua:");
+            	String rua1 = scanner.nextLine();
+            	System.out.println("Digite o Número:");
+            	int numero1 = scanner.nextInt();
+            	scanner.nextLine();  // Limpar o buffer
+            	System.out.println("Digite a Cidade:");
+            	String cidade1 = scanner.nextLine();
+            	System.out.println("Digite o Estado:");
+            	String estado1 = scanner.nextLine();
+
+            	// Criar o objeto Usuario
+            	Usuario usuario1 = new Usuario(id1, nome1, email1, senha1, rua1, numero1, cidade1, estado1);
+
+            	// Chamar o método para atualizar
+            	try {
+            	    repositorioUsuarioSql.atualizar(usuario1);
+            	} catch (SQLException e) {
+            	    System.out.println("Erro ao atualizar o usuário: " + e.getMessage());
+            	}
                 break;
             case 4:
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                usuarioServico.removerUsuario(id);
+                Usuario usuario4 = new Usuario();
+                usuario4.setId(scanner.nextInt());
+                repositorioUsuarioSql.remover(usuario4);
                 break;
             case 5:
-                List<Usuario> usuarios = usuarioServico.listarUsuarios();
+                ArrayList<Usuario> usuarios = new ArrayList<>();
+                usuarios = repositorioUsuarioSql.listarTodos();
                 for (Usuario u : usuarios) {
-                    System.out.println("ID: " + u.getId() + ", Nome: " + u.getNome());
+                    System.out.println(u.toString());
                 }
                 break;
             default:
@@ -150,8 +197,6 @@ public class Main {
 
                 if (avaliacao2 != null) {
                     System.out.println("Nota: " + avaliacao2.getNota() + ", Comentário: " + avaliacao2.getComentario());
-                } else {
-                    System.out.println("Avaliação não encontrada.");
                 }
                 break;
             case 3:
@@ -173,7 +218,7 @@ public class Main {
                 ArrayList<Avaliacao> avaliacoes = new ArrayList<>();
                 avaliacoes = repositorioAvaliacaoSql.listarTodos();
                 for (Avaliacao a : avaliacoes) {
-                    System.out.println("ID: " + a.getId() + ", Nota: " + a.getNota() + ", Comentário: " + a.getComentario());
+                    System.out.println(a.toString());
                 }
                 break;
             default:
@@ -309,20 +354,19 @@ public class Main {
 
         switch (opcao) {
             case 1:
-                System.out.println("Digite o ID:");
-                int id = scanner.nextInt();
-                System.out.println("Digite o Nome:");
-                String nome = scanner.nextLine();
-                categoriaServico.adicionarCategoria(new Categoria(id, nome));
+            	Categoria categoria = new Categoria();
+                System.out.println("Digite o nome da Categoria:");
+                categoria.setNome(scanner.nextLine());
+                repositorioCategoriaSql.adicionar(categoria);
                 break;
             case 2:
+            	Categoria categoria2 = new Categoria();
                 System.out.println("Digite o ID:");
-                id = scanner.nextInt();
-                Categoria categoria = categoriaServico.buscarCategoria(id);
-                if (categoria != null) {
-                    System.out.println("Categoria: " + categoria.getNome());
-                } else {
-                    System.out.println("Categoria não encontrada.");
+                categoria2.setId(scanner.nextInt());
+                repositorioCategoriaSql.buscar(categoria2.getId());
+                
+                if (categoria2 != null) {
+                    System.out.println("Categoria: " + categoria2.getNome());
                 }
                 break;
             case 3:

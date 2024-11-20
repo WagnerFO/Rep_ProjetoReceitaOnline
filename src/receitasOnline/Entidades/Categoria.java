@@ -12,6 +12,11 @@ public class Categoria {
     public Categoria(){
         //Construtor padrão
     }
+    
+    public Categoria(Integer id, String nome) {
+    	this.id=id;
+    	this.nome=nome;
+    }
     // Construtor sem ID (ID será gerado pelo banco)
     public Categoria(String nome, ArrayList<Receita> receitas) {
         this.nome = nome;
@@ -49,6 +54,10 @@ public class Categoria {
 
     public void setReceitas(ArrayList<Receita> receitas){
         this.receitas=receitas;
+    }
+    
+    public void adicionarReceita(Receita receita) {
+        this.receitas.add(receita);
     }
 
     @Override

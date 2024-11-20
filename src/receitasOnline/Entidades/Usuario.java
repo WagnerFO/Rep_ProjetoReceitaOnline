@@ -103,4 +103,16 @@ public class Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    
+    @Override
+    public String toString() {
+        return "Usuario { " +
+               "Nome: '" + nome + "', " +
+               "Email: '" + email + "', " +
+               "Rua: '" + rua + "', " +
+               "Número: " + numero + ", " +
+               "Cidade: '" + cidade + "', " +
+               "Estado: '" + estado + "' " +
+               "}";
+    }
 }

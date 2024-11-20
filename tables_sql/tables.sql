@@ -29,15 +29,18 @@ CREATE TABLE ingrediente (
     quantidade DOUBLE
 );
 
+-- Tabela receita (tabela base para todos os tipos de receita)
 CREATE TABLE receita (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     descricao TEXT NOT NULL,
     modo_preparo TEXT NOT NULL,
     categoriaId INT NOT NULL,
+    tipo VARCHAR(50),  -- Tipo para distinguir entre principal ou sobremesa (opcional)
     FOREIGN KEY (categoriaId) REFERENCES categoria(id)
 );
 
+-- Tabela receita_principal (informações específicas para receitas principais)
 CREATE TABLE receita_principal (
     id INT PRIMARY KEY,
     dificuldade VARCHAR(50) NOT NULL,
@@ -45,14 +48,15 @@ CREATE TABLE receita_principal (
     FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
 );
 
+-- Tabela receita_sobremesa (informações específicas para receitas sobremesas)
 CREATE TABLE receita_sobremesa (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    descricao TEXT,
-    modo_preparo TEXT,
-    categoriaId INT,
-    FOREIGN KEY (categoriaId) REFERENCES categoria(id)
+    id INT PRIMARY KEY,
+    contem_acucar BOOLEAN NOT NULL,
+    tipo_acucar VARCHAR(255),
+    FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
 );
+
+
 
 CREATE TABLE receita_ingrediente (
     id_receita INT,
