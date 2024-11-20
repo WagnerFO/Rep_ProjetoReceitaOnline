@@ -42,7 +42,7 @@ CREATE TABLE receita (
 
 -- Tabela receita_principal (informações específicas para receitas principais)
 CREATE TABLE receita_principal (
-    id INT PRIMARY KEY,
+    id INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
     dificuldade VARCHAR(50) NOT NULL,
     tempo_preparo INT NOT NULL,
     FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
@@ -50,7 +50,7 @@ CREATE TABLE receita_principal (
 
 -- Tabela receita_sobremesa (informações específicas para receitas sobremesas)
 CREATE TABLE receita_sobremesa (
-    id INT PRIMARY KEY,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     contem_acucar BOOLEAN NOT NULL,
     tipo_acucar VARCHAR(255),
     FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
