@@ -12,11 +12,11 @@ import receitasOnline.Entidades.Receita;
 import receitasOnline.Factory.ConnectionSingleton;
 import receitasOnline.IRepositorio.IRepositorioReceita;
 
-public class RepositorioReceitaSQL implements IRepositorioReceita {
+public class RepositorioReceitaPrincipalSQL implements IRepositorioReceita {
 
     private Connection connection;
     
-    public RepositorioReceitaSQL() {
+    public RepositorioReceitaPrincipalSQL() {
         try {
             this.connection = ConnectionSingleton.getInstance().conexao;
         } catch (Exception e) {
