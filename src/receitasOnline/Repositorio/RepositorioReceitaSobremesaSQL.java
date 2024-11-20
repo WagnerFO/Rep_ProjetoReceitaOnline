@@ -12,11 +12,11 @@ import receitasOnline.Entidades.Receita;
 import receitasOnline.Factory.ConnectionSingleton;
 import receitasOnline.IRepositorio.IRepositorioReceita;
 
-public class RepositorioReceitaSQL implements IRepositorioReceita {
+public class RepositorioReceitaSobremesaSQL implements IRepositorioReceita {
 
     private Connection connection;
     
-    public RepositorioReceitaSQL() {
+    public RepositorioReceitaSobremesaSQL() {
         try {
             this.connection = ConnectionSingleton.getInstance().conexao;
         } catch (Exception e) {
@@ -195,7 +195,7 @@ public class RepositorioReceitaSQL implements IRepositorioReceita {
                 categoria.setId(categoriaId);  // Definir o ID da categoria
     
                 // Criar a receita com a categoria associada
-                Receita receita = new Receita(id, titulo, descricao, categoria);
+                Receita receita = new Receita (id, titulo, descricao, categoria);
                 receitas.add(receita);
             }
         }

@@ -9,8 +9,8 @@ public class ReceitaSobremesa extends Receita {
     private String tipoAcucar; // Tipo de açúcar usado na receita, se aplicável
 
     // Construtor completo, útil para casos onde ID já existe (e.g., ao carregar do banco)
-    public ReceitaSobremesa(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, boolean contemAcucar, String tipoAcucar) {
-        super(id, titulo, descricao, modoPreparo, ingredientes);
+    public ReceitaSobremesa(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria, boolean contemAcucar, String tipoAcucar) {
+        super(id, titulo, descricao, modoPreparo, ingredientes, categoria);
         this.contemAcucar = contemAcucar;
         this.tipoAcucar = contemAcucar ? tipoAcucar : null;
     }

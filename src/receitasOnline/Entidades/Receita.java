@@ -3,7 +3,7 @@ package receitasOnline.Entidades;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Receita {
+public abstract class  Receita {
     private Integer id;
     private String titulo;
     private String descricao;
