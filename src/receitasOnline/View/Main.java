@@ -32,6 +32,8 @@ public class Main {
 
     // Método principal que inicia o programa e exibe o menu principal
     public static void main(String[] args) throws SQLException, InterruptedException {
+    	
+
         while (true) {
             // Exibe o menu principal
             System.out.println("Menu:");
@@ -113,14 +115,20 @@ public class Main {
             	}
                 break;
             case 2:
-            	Usuario usuario2 = new Usuario();
-                System.out.println("Digite o ID:");
-                usuario2.setId(scanner.nextInt());
-                repositorioUsuarioSql.buscar(usuario2.getId());
-                if (usuario2 != null) {
-                    System.out.println("Usuário: " + usuario2.getNome());
-                }
+            	// Solicitar o ID do usuário
+            	System.out.println("Digite o ID do usuário:");
+            	int id = scanner.nextInt();
+            	// Chamar o método buscar e armazenar o retorno
+            	Usuario usuario2 = repositorioUsuarioSql.buscar(id);
+
+            	// Verificar se o usuário foi encontrado e exibir o resultado
+            	if (usuario2 != null) {
+            	    System.out.println("Usuário encontrado: " + usuario2.getNome());
+            	} else {
+            	    System.out.println("Nenhum usuário encontrado com o ID fornecido.");
+            	}
                 break;
+
             case 3:
             	// Solicitar o ID do usuário
             	System.out.println("Digite o ID do usuário a ser atualizado:");
@@ -128,20 +136,20 @@ public class Main {
             	scanner.nextLine();  // Limpar o buffer
 
             	// Solicitar os novos dados
-            	System.out.println("Digite o Nome:");
+            	System.out.println("Digite o Novo Nome:");
             	String nome1 = scanner.nextLine();
-            	System.out.println("Digite o Email:");
+            	System.out.println("Digite o Novo Email:");
             	String email1 = scanner.nextLine();
-            	System.out.println("Digite a Senha:");
+            	System.out.println("Digite a Nova Senha:");
             	String senha1 = scanner.nextLine();
-            	System.out.println("Digite a Rua:");
+            	System.out.println("Digite a Nova Rua:");
             	String rua1 = scanner.nextLine();
-            	System.out.println("Digite o Número:");
+            	System.out.println("Digite o Novo Número:");
             	int numero1 = scanner.nextInt();
             	scanner.nextLine();  // Limpar o buffer
-            	System.out.println("Digite a Cidade:");
+            	System.out.println("Digite a Nova Cidade:");
             	String cidade1 = scanner.nextLine();
-            	System.out.println("Digite o Estado:");
+            	System.out.println("Digite o Novo stado:");
             	String estado1 = scanner.nextLine();
 
             	// Criar o objeto Usuario
@@ -155,11 +163,14 @@ public class Main {
             	}
                 break;
             case 4:
-                System.out.println("Digite o ID:");
-                Usuario usuario4 = new Usuario();
-                usuario4.setId(scanner.nextInt());
-                repositorioUsuarioSql.remover(usuario4);
-                break;
+            	// Código onde você vai solicitar o ID do usuário e chamar o método remover
+            	System.out.println("Digite o ID do usuário a ser removido:");
+            	Usuario usuario4 = new Usuario();
+            	usuario4.setId(scanner.nextInt());  // Solicita o ID do usuário a ser removido
+
+            	// Chama o método de remoção
+            	repositorioUsuarioSql.remover(usuario4);
+            	break;
             case 5:
                 ArrayList<Usuario> usuarios = new ArrayList<>();
                 usuarios = repositorioUsuarioSql.listarTodos();
@@ -186,39 +197,80 @@ public class Main {
 
         switch (opcao) {
             case 1:
-                Avaliacao avaliacao = new Avaliacao();
-                System.out.println("Digite a Nota:");
-                avaliacao.setNota(scanner.nextInt());
-                scanner.nextLine();
-                System.out.println("Digite o Comentário:");
-                avaliacao.setComentario(scanner.nextLine());
-                repositorioAvaliacaoSql.adicionar(avaliacao);
-                break;
-            case 2:
-                Avaliacao avaliacao2 = new Avaliacao();
-                System.out.println("Digite o ID:");
-                avaliacao2.setId(scanner.nextInt());
-                repositorioAvaliacaoSql.buscar(avaliacao2.getId());
+            	// Solicitar dados para adicionar a avaliação
+                System.out.println("Digite o ID do usuário:");
+                int usuarioId = scanner.nextInt();
+                System.out.println("Digite a nota (1 a 10):");
+                int nota = scanner.nextInt();
+                scanner.nextLine();  // Limpar o buffer
+                System.out.println("Digite o comentário:");
+                String comentario = scanner.nextLine();
 
-                if (avaliacao2 != null) {
-                    System.out.println("Nota: " + avaliacao2.getNota() + ", Comentário: " + avaliacao2.getComentario());
+                // Criar o objeto Avaliacao
+                Avaliacao avaliacao = new Avaliacao(nota, comentario, usuarioId);
+                
+                // Chamar o método para adicionar a avaliação
+                try {
+                    repositorioAvaliacaoSql.adicionar(avaliacao);
+                } catch (SQLException e) {
+                    System.out.println("Erro ao adicionar a avaliação: " + e.getMessage());
                 }
                 break;
+                
+            case 2:
+            	// Solicitar o ID do usuário
+            	System.out.println("Digite o ID da Avaliação:");
+            	int id2 = scanner.nextInt();
+            	// Chamar o método buscar e armazenar o retorno
+            	Avaliacao avaliacao2 = repositorioAvaliacaoSql.buscar(id2);
+
+            	// Verificar se o avaliacao foi encontrado e exibir o resultado
+            	if (avaliacao2 != null) {
+            	    System.out.println("Avaliação encontrada: a Nota é: " + avaliacao2.getNota());
+            	} else {
+            	    System.out.println("Nenhum avaliação encontrado com o ID fornecido.");
+            	}
+                break;
             case 3:
-                Avaliacao avaliacao3 = new Avaliacao();
-                System.out.println("Digite a Nova Nota:");
-                avaliacao3.setNota(scanner.nextInt());
-                scanner.nextLine();
-                System.out.println("Digite o Novo Comentário:");
-                avaliacao3.setComentario(scanner.nextLine());
-                repositorioAvaliacaoSql.atualizar(avaliacao3);
-                break;
+            	System.out.println("Digite o ID da avaliação que deseja atualizar:");
+            	int idAvaliacao = scanner.nextInt();
+            	scanner.nextLine(); // Limpar o buffer do scanner
+
+            	// Busca a avaliação existente no banco de dados
+            	Avaliacao avaliacaoExistente = repositorioAvaliacaoSql.buscar(idAvaliacao);
+
+            	if (avaliacaoExistente == null) {
+            	    System.out.println("Erro: Avaliação com o ID " + idAvaliacao + " não encontrada.");
+            	} else {
+            	    // Solicitar os novos dados
+            	    System.out.println("Digite a Nova Nota:");
+            	    int novaNota = scanner.nextInt();
+            	    scanner.nextLine(); // Limpar o buffer do scanner
+
+            	    System.out.println("Digite o Novo Comentário:");
+            	    String novoComentario = scanner.nextLine();
+
+            	    // Atualizar os campos da avaliação
+            	    avaliacaoExistente.setNota(novaNota);
+            	    avaliacaoExistente.setComentario(novoComentario);
+
+            	    // Chamar o método de atualização
+            	    try {
+            	        repositorioAvaliacaoSql.atualizar(avaliacaoExistente);
+            	    } catch (SQLException e) {
+            	        System.out.println("Erro ao atualizar a avaliação: " + e.getMessage());
+            	    }
+            	}
+            	break;
             case 4:
-                Avaliacao avaliacao4 = new Avaliacao();            
-                System.out.println("Digite o ID:");
-                avaliacao4.setId(scanner.nextInt());
-                repositorioAvaliacaoSql.remover(avaliacao4);
-                break;
+            	 // Código onde você vai solicitar o ID da Avaliação e chamar o método remover
+            	System.out.println("Digite o ID da Avaliação a ser removido:");
+            	Avaliacao avaliacao4 = new Avaliacao();
+            	avaliacao4.setId(scanner.nextInt());  // Solicita o ID do usuário a ser removido
+
+            	// Chama o método de remoção
+            	repositorioAvaliacaoSql.remover(avaliacao4);
+            	break;
             case 5:
                 ArrayList<Avaliacao> avaliacoes = new ArrayList<>();
                 avaliacoes = repositorioAvaliacaoSql.listarTodos();
@@ -247,89 +299,156 @@ public class Main {
             int opcao = scanner.nextInt();
             scanner.nextLine();
             switch (opcao) {
-                case 1:
-                	System.out.println("Digite o título da receita:");
-                    String titulo = scanner.nextLine();
-                    System.out.println("Digite a descrição da receita:");
-                    String descricao = scanner.nextLine();
-                    System.out.println("Digite o modo de preparo:");
-                    String modoPreparo = scanner.nextLine();
-                    System.out.println("Digite a dificuldade da receita:");
-                    String dificuldade = scanner.nextLine();
-                    System.out.println("Digite o ID da categoria:");
-                    Categoria categoria = new Categoria();
-                    categoria.setId(scanner.nextInt());
-                    scanner.nextLine(); // Consumir a quebra de linha após o int
-                    System.out.println("Digite o tempo de preparo (em minutos):");
-                    int tempoPreparo = scanner.nextInt();
-                    scanner.nextLine(); // Consumir a quebra de linha após o int
-                    System.out.println("Digite os ingredientes separados por vírgula:");
-                    String ingredientesInput = scanner.nextLine();
-                    
-                    // Converter a string de ingredientes em uma lista
-                    List<String> ingredientes = new ArrayList<>();
-                    for (String ingrediente : ingredientesInput.split(",")) {
-                        ingredientes.add(ingrediente.trim()); // Remover espaços extras antes de adicionar
+            case 1:
+                System.out.println("Digite o título da receita:");
+                String titulo = scanner.nextLine();
+                System.out.println("Digite a descrição da receita:");
+                String descricao = scanner.nextLine();
+                System.out.println("Digite o modo de preparo:");
+                String modoPreparo = scanner.nextLine();
+
+                // Pedir o nome da categoria, não o ID
+                System.out.println("Digite o nome da categoria:");
+                String nomeCategoria = scanner.nextLine();
+                Categoria categoria = new Categoria();
+                categoria.setNome(nomeCategoria);
+
+                System.out.println("Digite o tempo de preparo (em minutos):");
+                int tempoPreparo = scanner.nextInt();
+                scanner.nextLine(); // Consumir a quebra de linha após o int
+
+                // Agora, pedimos para o usuário inserir os ingredientes com quantidade
+                System.out.println("Digite os ingredientes com quantidade (formato: nome:quantidade), separados por vírgula:");
+                String ingredientesInput = scanner.nextLine();
+
+                // Criar uma lista de objetos Ingrediente a partir da entrada do usuário
+                List<Ingrediente> ingredientes = new ArrayList<>();
+                for (String ingredienteInput : ingredientesInput.split(",")) {
+                    String[] partes = ingredienteInput.split(":");
+                    if (partes.length == 2) {
+                        String nomeIngrediente = partes[0].trim();
+                        try {
+                            double quantidadeIngrediente = Double.parseDouble(partes[1].trim());
+                            if (quantidadeIngrediente <= 0) {
+                                System.out.println("A quantidade do ingrediente deve ser um valor positivo: " + nomeIngrediente);
+                                continue;
+                            }
+                            Ingrediente ingrediente = new Ingrediente(nomeIngrediente, quantidadeIngrediente);
+                            ingredientes.add(ingrediente);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Erro ao interpretar a quantidade para o ingrediente: " + nomeIngrediente);
+                        }
+                    } else {
+                        System.out.println("Formato inválido para o ingrediente: " + ingredienteInput);
                     }
+                }
+
+                // Criar o objeto ReceitaPrincipal com a lista de ingredientes
+                ReceitaPrincipal receitaP = new ReceitaPrincipal(titulo, descricao, modoPreparo, ingredientes, categoria, tempoPreparo);
+
+                try {
+                    // Verifica ou cria a categoria, e depois adiciona a receita
+                    repositorioReceitaPrincipalSql.adicionar(receitaP);
+                    System.out.println("Receita adicionada com sucesso!");
+                } catch (SQLException e) {
+                    System.out.println("Erro ao adicionar receita: " + e.getMessage());
+                }
+                break;
+            case 2: 
+                ReceitaPrincipal receitaP2 = new ReceitaPrincipal();
+                System.out.println("Digite o ID:");
+                receitaP2.setId(scanner.nextInt());
+                System.out.println("\n");
+                
+                // Buscar a receita, o método buscar agora não retorna valor, então temos que verificar a receita
+                repositorioReceitaPrincipalSql.buscar(receitaP2); // Preenche a receita com as informações
+
+                // Verificar se a receita foi encontrada
+                if (receitaP2.getId() != 0) {
+                    // Imprimir informações da receita
+                    System.out.println("Receita Encontrada:");
+                    System.out.println("Título: " + receitaP2.getTitulo());
+                    System.out.println("Descrição: " + receitaP2.getDescricao());
+                    System.out.println("Modo de Preparo: " + receitaP2.getModoPreparo());
+                    System.out.println("Tempo de Preparo: " + receitaP2.getTempoPreparo() + " minutos");
                     
-                    ReceitaPrincipal receitaP = new ReceitaPrincipal(titulo, descricao, modoPreparo, dificuldade, ingredientes, categoria, tempoPreparo );
-                    
-                    try {
-                    	repositorioReceitaPrincipalSql.adicionar(receitaP);
-                    	System.out.println("Receita adicionada com Sucesso!");
-                    }catch(SQLException e) {
-                    	System.out.println("Erro ao Adicionar Receita: "+e.getMessage());
+                    // Imprimir a categoria
+                    System.out.println("Categoria: " + receitaP2.getCategoria().getNome());
+
+                    // Imprimir os ingredientes
+                    System.out.println("\nIngredientes:");
+                    for (Ingrediente ingrediente : receitaP2.getIngredientes()) {
+                        System.out.println(ingrediente.getNome() + ": " + ingrediente.getQuantidade() + " unidades");
                     }
-                    break;
-                case 2:
-                	ReceitaPrincipal receitaP2 = new ReceitaPrincipal();
-                    System.out.println("Digite o ID:");
-                    receitaP2.setId(scanner.nextInt());
-                    repositorioReceitaPrincipalSql.buscar(receitaP2.getId());
-                    if (receitaP2 != null) {
-                        System.out.println("Receita: " + receitaP2.getTitulo() + ", Descrição: " + receitaP2.getDescricao());
+                } else {
+                    System.out.println("Receita não encontrada!");
+                }
+                break;
+                case 3:System.out.println("Digite o ID:");
+                int idRP = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Digite o título da receita:");
+                String titulo3 = scanner.nextLine();
+                System.out.println("Digite a descrição da receita:");
+                String descricao3 = scanner.nextLine();
+                System.out.println("Digite o modo de preparo:");
+                String modoPreparo3 = scanner.nextLine();
+                System.out.println("Digite o ID da categoria:");
+                int idCategoria = scanner.nextInt();
+                scanner.nextLine(); // Consumir a quebra de linha após o int
+
+                // Agora buscamos a categoria no banco de dados usando o ID fornecido
+                Categoria categoria3 = repositorioCategoriaSql.buscar(idCategoria); // Método buscar no repositório de categorias
+                if (categoria3 == null) {
+                    System.out.println("Categoria com ID " + idCategoria + " não encontrada.");
+                    break;  // Encerra a operação caso a categoria não seja encontrada
+                }
+
+                System.out.println("Digite o tempo de preparo (em minutos):");
+                int tempoPreparo3 = scanner.nextInt();
+                scanner.nextLine(); // Consumir a quebra de linha após o int
+
+                // Agora, pedimos para o usuário inserir os ingredientes com quantidade
+                System.out.println("Digite os ingredientes com quantidade (formato: nome:quantidade), separados por vírgula:");
+                String ingredientesInput3 = scanner.nextLine();
+
+                // Criar uma lista de objetos Ingrediente a partir da entrada do usuário
+                List<Ingrediente> ingredientes3 = new ArrayList<>();
+                for (String ingredienteInput : ingredientesInput3.split(",")) {
+                    String[] partes = ingredienteInput.split(":");
+                    if (partes.length == 2) {
+                        String nomeIngrediente = partes[0].trim();
+                        try {
+                            double quantidadeIngrediente = Double.parseDouble(partes[1].trim());
+                            if (quantidadeIngrediente <= 0) {
+                                System.out.println("A quantidade do ingrediente deve ser um valor positivo: " + nomeIngrediente);
+                                continue;
+                            }
+                            Ingrediente ingrediente3 = new Ingrediente(nomeIngrediente, quantidadeIngrediente);
+                            ingredientes3.add(ingrediente3);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Erro ao interpretar a quantidade para o ingrediente: " + nomeIngrediente);
+                        }
+                    } else {
+                        System.out.println("Formato inválido para o ingrediente: " + ingredienteInput);
                     }
-                    break;
-                case 3:
-                    System.out.println("Digite o ID:");
-                    int idRP = scanner.nextInt();
-                    scanner.nextLine();
-                    
-                    System.out.println("Digite o título da receita:");
-                    String titulo3 = scanner.nextLine();
-                    System.out.println("Digite a descrição da receita:");
-                    String descricao3 = scanner.nextLine();
-                    System.out.println("Digite o modo de preparo:");
-                    String modoPreparo3 = scanner.nextLine();
-                    System.out.println("Digite a dificuldade da receita:");
-                    String dificuldade3 = scanner.nextLine();
-                    System.out.println("Digite o ID da categoria:");
-                    Categoria categoria3 = new Categoria();
-                    categoria3.setId(scanner.nextInt());
-                    scanner.nextLine(); // Consumir a quebra de linha após o int
-                    System.out.println("Digite o tempo de preparo (em minutos):");
-                    int tempoPreparo3 = scanner.nextInt();
-                    scanner.nextLine(); // Consumir a quebra de linha após o int
-                    System.out.println("Digite os ingredientes separados por vírgula:");
-                    String ingredientesInput3 = scanner.nextLine();
-                    
-                    // Converter a string de ingredientes em uma lista
-                    List<String> ingredientes3 = new ArrayList<>();
-                    for (String ingrediente : ingredientesInput3.split(",")) {
-                        ingredientes3.add(ingrediente.trim()); // Remover espaços extras antes de adicionar
-                    }
-                    ReceitaPrincipal receitaP3 = new ReceitaPrincipal(idRP, titulo3, descricao3, modoPreparo3, dificuldade3, ingredientes3, categoria3, tempoPreparo3 );
-                    
-                    try {
-                    	repositorioReceitaPrincipalSql.atualizar(receitaP3);
-                    }catch(SQLException e) {
-                    	System.out.println("Erro ao atualizar Receita: "+e.getMessage());
-                    }
-                    break;
+                }
+
+                ReceitaPrincipal receitaP3 = new ReceitaPrincipal(idRP, titulo3, descricao3, modoPreparo3, ingredientes3, categoria3, tempoPreparo3);
+
+                try {
+                    repositorioReceitaPrincipalSql.atualizar(receitaP3);
+                } catch (SQLException e) {
+                    System.out.println("Erro ao atualizar Receita: " + e.getMessage());
+                }
+                break;
                 case 4:
-                    System.out.println("Digite o ID:");
+                    System.out.println("Digite o ID da receita que deseja remover:");
                     ReceitaPrincipal receitaP4 = new ReceitaPrincipal();
                     receitaP4.setId(scanner.nextInt());
+
+                    // Chama o método remover
                     repositorioReceitaPrincipalSql.remover(receitaP4);
                     break;
                 case 5:
@@ -476,53 +595,77 @@ public class Main {
 
         switch (opcao) {
             case 1:
-                System.out.println("Digite o Nome: ");
+            	System.out.println("Digite o Nome do Ingrediente:");
                 String nome = scanner.nextLine();
-                System.out.println("Digite a quantidade: ");
+                System.out.println("Digite a Quantidade do Ingrediente:");
                 double quantidade = scanner.nextDouble();
-                
-                Ingrediente ingrediente1 = new Ingrediente(nome, quantidade);
+                scanner.nextLine(); // Limpar o buffer do scanner
+
+                Ingrediente ingrediente = new Ingrediente(nome, quantidade);
                 try {
-                	repositorioIngredienteSql.adicionar(ingrediente1);
-                	System.out.println("Ingrediente adicionado com sucesso!");
-                }catch(SQLException e) {
-                	System.out.println("Erro ao adicionar o ingrediente: " + e.getMessage());
-            	}
+                    repositorioIngredienteSql.adicionar(ingrediente); // Não precisa passar receitaId aqui
+                    System.out.println("Ingrediente adicionado com sucesso!");
+                } catch (SQLException e) {
+                    System.out.println("Erro ao adicionar o ingrediente: " + e.getMessage());
+                }
                 break;
             case 2:
             	Ingrediente ingrediente2 = new Ingrediente();
-                System.out.println("Digite o ID:");
-                ingrediente2.setId(scanner.nextInt());
-                repositorioIngredienteSql.buscar(ingrediente2.getId());
-                if (ingrediente2 != null) {
-                    System.out.println("Ingrediente: " + ingrediente2.getNome());
-                }
-                break;
+            	System.out.println("Digite o ID:");
+            	ingrediente2.setId(scanner.nextInt());
+
+            	// Chama o método buscar e armazena o resultado na variável ingrediente2
+            	Ingrediente ingredienteEncontrado = repositorioIngredienteSql.buscar(ingrediente2.getId());
+
+            	if (ingredienteEncontrado != null) {
+            	    System.out.println("Ingrediente: " + ingredienteEncontrado.getNome());
+            	} else {
+            	    System.out.println("Ingrediente não encontrado.");
+            	}
+            	break;
             case 3:
-                System.out.println("Digite o ID:");
+                System.out.println("Digite o ID do ingrediente a ser atualizado:");
                 int id3 = scanner.nextInt();
-                System.out.println(); //Limpar o buffer
-                
+                scanner.nextLine(); // Limpar o buffer de entrada
+
                 System.out.println("Digite o Novo Nome:");
                 String nome3 = scanner.nextLine();
-                System.out.println("Digite a quantidade: ");
-                double quantidade3 = scanner.nextDouble();
-                
-                // Criar o objeto Ingrediente 
+
+                // Adicionando validação para o tipo de dado de quantidade (double)
+                double quantidade3 = 0;
+                boolean validQuantidade = false;
+                while (!validQuantidade) {
+                    System.out.println("Digite a nova quantidade: ");
+                    if (scanner.hasNextDouble()) {
+                        quantidade3 = scanner.nextDouble();
+                        validQuantidade = true;
+                    } else {
+                        System.out.println("Erro: Digite um número válido para a quantidade.");
+                        scanner.nextLine(); // Limpa o buffer de entrada para o próximo valor
+                    }
+                }
+
+                // Criar o objeto Ingrediente
                 Ingrediente ingrediente3 = new Ingrediente(id3, nome3, quantidade3);
-                
-                //Chamar o método para atualizar
+
+                // Chamar o método para atualizar
                 try {
-                	repositorioIngredienteSql.atualizar(ingrediente3);
-                }catch(SQLException e) {
-                	System.out.println("Erro ao atualizar o ingrediente: " + e.getMessage());
+                    repositorioIngredienteSql.atualizar(ingrediente3); // Passa o ingrediente para o repositório
+                } catch (SQLException e) {
+                    System.out.println("Erro ao atualizar o ingrediente: " + e.getMessage());
                 }
                 break;
+
+
             case 4:
-                System.out.println("Digite o ID:");
-                Ingrediente ingrediente4 = new Ingrediente();
-                ingrediente4.setId(scanner.nextInt());
-                repositorioIngredienteSql.remover(ingrediente4);
+            	 // Código onde você vai solicitar o ID do Ingrediente e chamar o método remover
+            	System.out.println("Digite o ID do Ingrediente a ser removido:");
+            	Ingrediente ingrediente4 = new Ingrediente();
+            	ingrediente4.setId(scanner.nextInt());  // Solicita o ID do ingrediente a ser removido
+
+            	// Chama o método de remoção
+            	repositorioIngredienteSql.remover(ingrediente4);
+            	
                 break;
             case 5:
             	ArrayList<Ingrediente> ingredientes = new ArrayList<>();
@@ -550,23 +693,31 @@ public class Main {
 
         switch (opcao) {
             case 1:
-            	Categoria categoria = new Categoria();
                 System.out.println("Digite o nome da Categoria:");
-                categoria.setNome(scanner.nextLine());
-                repositorioCategoriaSql.adicionar(categoria);
+                String nome1 = scanner.nextLine();
+                Categoria categoria = new Categoria(nome1);
+                try {
+            	    repositorioCategoriaSql.adicionar(categoria);
+            	    System.out.println("Categoria adicionada com sucesso!");
+            	} catch (SQLException e) {
+            	    System.out.println("Erro ao adicionar a categoria: " + e.getMessage());
+            	}
                 break;
             case 2:
             	Categoria categoria2 = new Categoria();
                 System.out.println("Digite o ID:");
                 categoria2.setId(scanner.nextInt());
-                repositorioCategoriaSql.buscar(categoria2.getId());
                 
-                if (categoria2 != null) {
-                    System.out.println("Categoria: " + categoria2.getNome());
+                Categoria categoriaEncontrada = repositorioCategoriaSql.buscar(categoria2.getId());
+                
+                if (categoriaEncontrada != null) {
+                    System.out.println("Categoria: " + categoriaEncontrada.getNome());
+                }else {
+                	System.out.println("Categoria não encontrada. ");
                 }
                 break;
             case 3:
-                System.out.println("Digite o ID:");
+                System.out.println("Digite o ID da categoria a ser atualizada:");
                 int id3 = scanner.nextInt();
                 scanner.nextLine(); // Limpar o buffer
                 
@@ -574,8 +725,7 @@ public class Main {
                 String nome3 = scanner.nextLine();
                 
                 //Criar o objeto Categoria
-                Categoria categoria3 = new Categoria(id3, nome3);
-                
+                Categoria categoria3 = new Categoria(id3, nome3);                
                 
                 //Chamar o método para atualizar
                 try {
@@ -602,9 +752,4 @@ public class Main {
         }
     }
 
-    /*/ Método para exibir todas as receitas armazenadas na lista encadeada
-    private static void exibirReceitas() {
-        System.out.println("Receitas Armazenadas:");
-        listaReceitas.listar(); // Chama o método listar da lista encadeada
-    }*/
 }

@@ -55,25 +55,31 @@ public class RepositorioUsuarioSQL implements IRepositorioUsuario {
                 usuario.setNumero(rs.getInt("numero"));
                 usuario.setCidade(rs.getString("cidade"));
                 usuario.setEstado(rs.getString("estado"));
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao Buscar Usuário: " + e.getMessage());
-            e.printStackTrace();
+                }
+            } catch (SQLException e) {
+            	System.out.println("Erro ao Buscar Usuário: " + e.getMessage());
+            	e.printStackTrace();
+            	}
+        return usuario; // Retorna o objeto Usuario ou null se não encontrado
         }
-        return usuario;
-    }
+
+
 
     @Override
     public void atualizar(Usuario usuario) throws SQLException {
-    	// Verificar se o usuário existe antes de tentar atualizar
+        // Verificar se o usuário existe antes de tentar atualizar
         Usuario usuarioExistente = buscar(usuario.getId());
         
         if (usuarioExistente == null) {
             System.out.println("Erro: Usuário com o ID " + usuario.getId() + " não encontrado.");
             return; // Interrompe a execução se o ID não existir
         }
+        
+        // SQL para atualizar os dados do usuário
         String sql = "UPDATE usuario SET nome = ?, email = ?, senha = ?, rua = ?, numero = ?, cidade = ?, estado = ? WHERE id = ?";
+        
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // Configura os parâmetros da query
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getEmail());
             stmt.setString(3, usuario.getSenha());
@@ -81,30 +87,48 @@ public class RepositorioUsuarioSQL implements IRepositorioUsuario {
             stmt.setInt(5, usuario.getNumero());
             stmt.setString(6, usuario.getCidade());
             stmt.setString(7, usuario.getEstado());
-            stmt.executeUpdate();
+            stmt.setInt(8, usuario.getId());  // Aqui está o ID do usuário, que faltava no seu código
+            
+            // Executa a atualização
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Usuário atualizado com sucesso.");
+            } else {
+                System.out.println("Erro ao atualizar usuário.");
+            }
         } catch (SQLException e) {
             System.out.println("Erro ao Atualizar Usuário: " + e.getMessage());
             throw e; // Re-lança a exceção para que ela seja tratada em outro lugar, se necessário
         }
     }
 
+
     @Override
     public void remover(Usuario usuario) {
-    	// Verificar se o usuário existe antes de tentar atualizar
+        // Verificar se o usuário existe antes de tentar remover
         Usuario usuarioExistente = buscar(usuario.getId());
         
         if (usuarioExistente == null) {
             System.out.println("Erro: Usuário com o ID " + usuario.getId() + " não encontrado.");
             return; // Interrompe a execução se o ID não existir
         }
+
+        // Se o usuário existe, prosseguir com a remoção
         String sql = "DELETE FROM usuario WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, usuario.getId());
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate(); // Executa a remoção
+
+            if (rowsAffected > 0) {
+                // Se a remoção foi bem-sucedida, exibe uma mensagem
+                System.out.println("Usuário " + usuarioExistente.getNome() + " removido com sucesso.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public ArrayList<Usuario> listarTodos() throws SQLException {

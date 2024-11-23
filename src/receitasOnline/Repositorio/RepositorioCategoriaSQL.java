@@ -1,5 +1,6 @@
 package receitasOnline.Repositorio;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,6 +32,32 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, categoria.getNome());
             stmt.executeUpdate();
+        }
+    }
+    
+    public int obterOuCriarCategoria(String nomeCategoria, Connection connection) throws SQLException {
+        String selectCategoriaSQL = "SELECT id FROM categoria WHERE nome = ?";
+        String insertCategoriaSQL = "INSERT INTO categoria (nome) VALUES (?)";
+
+        // Verificar se a categoria já existe
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectCategoriaSQL)) {
+            selectStmt.setString(1, nomeCategoria);
+            ResultSet rsCategoria = selectStmt.executeQuery();
+            if (rsCategoria.next()) {
+                return rsCategoria.getInt("id"); // Se a categoria existe, retorna o ID
+            }
+        }
+
+        // Se não existir, insere uma nova categoria
+        try (PreparedStatement insertStmt = connection.prepareStatement(insertCategoriaSQL, Statement.RETURN_GENERATED_KEYS)) {
+            insertStmt.setString(1, nomeCategoria);
+            insertStmt.executeUpdate();
+            ResultSet rsInsert = insertStmt.getGeneratedKeys();
+            if (rsInsert.next()) {
+                return rsInsert.getInt(1); // Retorna o ID da nova categoria
+            } else {
+                throw new SQLException("Erro ao obter o ID da categoria inserida.");
+            }
         }
     }
 
@@ -83,7 +110,6 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
                                         ((ReceitaSobremesa) receita).setTipoAcucar(rsReceitas.getString("tipo_acucar"));
                                     } else {
                                         receita = new ReceitaPrincipal();
-                                        ((ReceitaPrincipal) receita).setDificuldade(rsReceitas.getString("dificuldade"));
                                         ((ReceitaPrincipal) receita).setTempoPreparo(rsReceitas.getInt("tempo_preparo"));
                                     }
 
@@ -106,24 +132,29 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
         }
 
 
-    @Override
-    public void atualizar(Categoria categoria) throws SQLException {
-    	Categoria categoriaExistente = buscar(categoria.getId());
+        @Override
+        public void atualizar(Categoria categoria) throws SQLException {
+            Categoria categoriaExistente = buscar(categoria.getId());
 
-    	if (categoriaExistente == null) {
-    	    System.out.println("Erro: Categoria com o ID " + categoria.getId() + " não encontrada.");
-    	    return; // Interrompe a execução se o ID não existir
-    	}
-        String sql = "UPDATE categoria SET nome = ?, descricao = ? WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, categoria.getNome());
-            stmt.setInt(3, categoria.getId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Erro ao alterar Categoria " + e.getMessage());
-            throw e;
+            if (categoriaExistente == null) {
+                System.out.println("Erro: Categoria com o ID " + categoria.getId() + " não encontrada.");
+                return; // Interrompe a execução se o ID não existir
+            }
+
+            // SQL com dois parâmetros: nome e id
+            String sql = "UPDATE categoria SET nome = ? WHERE id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, categoria.getNome());  // Define o nome da categoria
+                stmt.setInt(2, categoria.getId());       // Define o id da categoria para filtrar no WHERE
+
+                stmt.executeUpdate(); // Executa a atualização
+                System.out.println("Categoria atualizada com sucesso!");
+            } catch (SQLException e) {
+                System.out.println("Erro ao alterar Categoria: " + e.getMessage());
+                throw e;
+            }
         }
-    }
+
 
     @Override
     public void remover(Categoria categoria) {
@@ -136,7 +167,11 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
         String sql = "DELETE FROM categoria WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, categoria.getId());
-            stmt.executeUpdate();   
+            int rowsAffected = stmt.executeUpdate();
+            
+            if(rowsAffected > 0) {
+            	System.out.println("Categoria " + categoriaExistente.getNome() + " removido com sucesso.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -153,47 +188,15 @@ public class RepositorioCategoriaSQL implements IRepositorioCategoria {
             while (rs.next()) {
                 Integer categoriaId = rs.getInt("id");
                 String nomeCategoria = rs.getString("nome");
-
-                String sqlReceitas = "SELECT * FROM receita WHERE categoriaId = ?";
-                ArrayList<Receita> receitas = new ArrayList<>();
                 
-                try (PreparedStatement stmtReceitas = connection.prepareStatement(sqlReceitas)) {
-                    stmtReceitas.setInt(1, categoriaId);
-                    
-                    try (ResultSet rsReceitas = stmtReceitas.executeQuery()) {
-                        while (rsReceitas.next()) {
-                            // Verificar o tipo da receita
-                            String tipoReceita = rsReceitas.getString("tipo"); // Exemplo de coluna 'tipo'
-
-                            Receita receita;
-                            if ("sobremesa".equals(tipoReceita)) {
-                                receita = new ReceitaSobremesa();  // Instancia ReceitaSobremesa
-                                ((ReceitaSobremesa) receita).setContemAcucar(rsReceitas.getBoolean("contem_acucar"));
-                                ((ReceitaSobremesa) receita).setTipoAcucar(rsReceitas.getString("tipo_acucar"));
-                            } else if ("principal".equals(tipoReceita)) {
-                                receita = new ReceitaPrincipal();  // Instancia ReceitaPrincipal
-                            } else {
-                                continue;  // Caso o tipo de receita não seja reconhecido, pula a iteração
-                            }
-
-                            receita.setId(rsReceitas.getInt("id"));
-                            receita.setTitulo(rsReceitas.getString("titulo"));
-                            receita.setDescricao(rsReceitas.getString("descricao"));
-                            receitas.add(receita);
-                        }
-                    }
-                }
-
-                // Criação da categoria com as receitas associadas
-                Categoria categoria = new Categoria(categoriaId, nomeCategoria, receitas);
+                // Criar a categoria sem associar receitas
+                Categoria categoria = new Categoria(categoriaId, nomeCategoria);
                 categorias.add(categoria);
             }
         }
-        
+
         return categorias;
     }
-
-
 
 
 }

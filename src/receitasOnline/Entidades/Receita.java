@@ -1,6 +1,5 @@
 package receitasOnline.Entidades;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class  Receita {
@@ -8,7 +7,7 @@ public abstract class  Receita {
     private String titulo;
     private String descricao;
     private String modoPreparo;
-    private List<String> ingredientes;
+    private List<Ingrediente> ingredientes;
     private Categoria categoria;
 
     public Receita(){
@@ -16,16 +15,16 @@ public abstract class  Receita {
     }
 
     // Construtores existentes
-    public Receita(String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria) {
+    public Receita(String titulo, String descricao, String modoPreparo, List<Ingrediente> ingredientes, Categoria categoria) {
         this.titulo = titulo; // ou this.nome = nome se você quiser usar 'nome'
         this.descricao = descricao;
-        this.modoPreparo = "";  // Defina um valor padrão se necessário
-        this.ingredientes = new ArrayList<>(); // Defina uma lista vazia por padrão
+        this.modoPreparo = modoPreparo;  // Defina um valor padrão se necessário
+        this.ingredientes = ingredientes; // Defina uma lista vazia por padrão
         this.categoria=categoria;
     }
 
     // Construtor completo, usado quando a receita já tem um ID
-    public Receita(Integer id, String titulo, String descricao, String modoPreparo, List<String> ingredientes, Categoria categoria) {
+    public Receita(Integer id, String titulo, String descricao, String modoPreparo, List<Ingrediente> ingredientes, Categoria categoria) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -71,11 +70,11 @@ public abstract class  Receita {
         this.modoPreparo = modoPreparo;
     }
 
-    public List<String> getIngredientes() {
+    public List<Ingrediente> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(List<String> ingredientes) {
+    public void setIngredientes(List<Ingrediente> ingredientes) {
         this.ingredientes = ingredientes;
     }
 
