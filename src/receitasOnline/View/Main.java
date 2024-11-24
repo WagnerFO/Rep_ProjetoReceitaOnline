@@ -384,8 +384,12 @@ public class Main {
                     System.out.println("Receita não encontrada!");
                 }
                 break;
+<<<<<<< HEAD
                 case 3:
                 System.out.println("Digite o ID da Receita a ser Atualizada:");
+=======
+                case 3:System.out.println("Digite o ID:");
+>>>>>>> bbd7f8fd95bbf3765526c52bf3d6ab634227426c
                 int idRP = scanner.nextInt();
                 scanner.nextLine();
 

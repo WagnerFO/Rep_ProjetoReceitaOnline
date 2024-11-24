@@ -366,7 +366,11 @@ public class RepositorioReceitaPrincipalSQL implements IRepositorioReceitaPrinci
         }
     }
 
+<<<<<<< HEAD
    
+=======
+    
+>>>>>>> bbd7f8fd95bbf3765526c52bf3d6ab634227426c
     @Override
     public ArrayList<ReceitaPrincipal> listarTodos() throws SQLException {
         // Verifique se a conexão está aberta e válida
