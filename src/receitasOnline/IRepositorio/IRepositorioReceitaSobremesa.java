@@ -8,9 +8,9 @@ import receitasOnline.Entidades.ReceitaSobremesa;
 public interface IRepositorioReceitaSobremesa {
 
     void adicionar(ReceitaSobremesa receita) throws SQLException, InterruptedException;
-    ReceitaSobremesa buscar(int id);
+    void buscar(ReceitaSobremesa receita);;
     ArrayList<ReceitaSobremesa> buscarReceitasPorIngrediente(String nomeIngrediente)throws SQLException, InterruptedException;
-    void atualizar(ReceitaSobremesa receita) throws SQLException;
+    void atualizar(ReceitaSobremesa receita) throws SQLException, InterruptedException;
     void remover(ReceitaSobremesa receita);
     ArrayList<ReceitaSobremesa> listarTodos() throws SQLException; 
 }

@@ -11,15 +11,15 @@ CREATE TABLE usuario (
 );
 
 CREATE TABLE avaliacao (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nota INT NOT NULL,
-    comentario TEXT,
-    usuarioId INT,
+    comentario TEXT NOT NULL,
+    usuario_id INT NOT NULL,
     FOREIGN KEY (usuarioId) REFERENCES usuario(id)
 );
 
 CREATE TABLE categoria (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL
 );
 
@@ -29,39 +29,59 @@ CREATE TABLE ingrediente (
     quantidade DOUBLE
 );
 
--- Tabela receita (tabela base para todos os tipos de receita)
-CREATE TABLE receita (
+
+-- Tabela receita_principal (informações específicas para receitas principais)
+CREATE TABLE receita_principal (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     descricao TEXT NOT NULL,
     modo_preparo TEXT NOT NULL,
     categoriaId INT NOT NULL,
-    tipo VARCHAR(50),  -- Tipo para distinguir entre principal ou sobremesa (opcional)
-    FOREIGN KEY (categoriaId) REFERENCES categoria(id)
-);
-
--- Tabela receita_principal (informações específicas para receitas principais)
-CREATE TABLE receita_principal (
-    id INT  NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    dificuldade VARCHAR(50) NOT NULL,
     tempo_preparo INT NOT NULL,
-    FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
+    FOREIGN KEY (categoriaId) REFERENCES categoria(id)
 );
 
 -- Tabela receita_sobremesa (informações específicas para receitas sobremesas)
 CREATE TABLE receita_sobremesa (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descricao TEXT NOT NULL,
+    modo_preparo TEXT NOT NULL,
+    categoriaId INT NOT NULL,
     contem_acucar BOOLEAN NOT NULL,
     tipo_acucar VARCHAR(255),
-    FOREIGN KEY (id) REFERENCES receita(id) ON DELETE CASCADE
+    FOREIGN KEY (categoriaId) REFERENCES categoria(id)
 );
 
 
-
-CREATE TABLE receita_ingrediente (
-    id_receita INT,
+CREATE TABLE receitaP_ingrediente(
+    id_receitaPrincipal INT,
     id_ingrediente INT,
-    PRIMARY KEY (id_receita, id_ingrediente),
-    FOREIGN KEY (id_receita) REFERENCES receita(id),
+    PRIMARY KEY (id_receitaPrincipal, id_ingrediente),
+    FOREIGN KEY (id_receitaPrincipal) REFERENCES receita_principal(id),
     FOREIGN KEY (id_ingrediente) REFERENCES ingrediente(id)
+);
+
+CREATE TABLE receitaS_ingrediente (
+    id_receitaSobremesa INT,
+    id_ingrediente INT,
+    PRIMARY KEY (id_receitaSobremesa, id_ingrediente),
+    FOREIGN KEY (id_receitaSobremesa) REFERENCES receita_sobremesa(id),
+    FOREIGN KEY (id_ingrediente) REFERENCES ingrediente(id)
+);
+
+CREATE TABLE receitaP_categoria (
+    id_receitaPrincipal INT NOT NULL,
+    id_categoria INT NOT NULL,
+    PRIMARY KEY (id_receitaPrincipal, id_categoria),  -- Garantir a unicidade da combinação
+    FOREIGN KEY (id_receitaPrincipal) REFERENCES receita_principal(id) ON DELETE CASCADE,  -- Excluir as associações quando a receita for excluída
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id) ON DELETE CASCADE  -- Excluir as associações quando a categoria for excluída
+);
+
+CREATE TABLE receitaS_categoria (
+    id_receitaSobremesa INT NOT NULL,
+    id_categoria INT NOT NULL,
+    PRIMARY KEY (id_receitaSobremesa, id_categoria),  -- Garantir a unicidade da combinação
+    FOREIGN KEY (id_receitaPrincipal) REFERENCES receita_sobremesa(id) ON DELETE CASCADE,  -- Excluir as associações quando a receita for excluída
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id) ON DELETE CASCADE  -- Excluir as associações quando a categoria for excluída
 );

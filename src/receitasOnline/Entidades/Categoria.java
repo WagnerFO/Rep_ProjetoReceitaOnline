@@ -13,9 +13,13 @@ public class Categoria {
         //Construtor padrão
     }
     
+    public Categoria( String nome) {
+    	this.nome=nome; //Construtor só com nome
+    }
+    
     public Categoria(Integer id, String nome) {
     	this.id=id;
-    	this.nome=nome;
+    	this.nome=nome; //Construtor com ID e Nome para listar receitas por categoria
     }
     // Construtor sem ID (ID será gerado pelo banco)
     public Categoria(String nome, ArrayList<Receita> receitas) {
