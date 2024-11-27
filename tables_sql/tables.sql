@@ -15,7 +15,7 @@ CREATE TABLE avaliacao (
     nota INT NOT NULL,
     comentario TEXT NOT NULL,
     usuario_id INT NOT NULL,
-    FOREIGN KEY (usuarioId) REFERENCES usuario(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
 CREATE TABLE categoria (
@@ -54,10 +54,6 @@ CREATE TABLE receita_sobremesa (
 );
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> bbd7f8fd95bbf3765526c52bf3d6ab634227426c
 CREATE TABLE receitaP_ingrediente(
     id_receitaPrincipal INT,
     id_ingrediente INT,
@@ -75,26 +71,17 @@ CREATE TABLE receitaS_ingrediente (
 );
 
 CREATE TABLE receitaP_categoria (
-<<<<<<< HEAD
-    id_receitaPrincipal INT NOT NULL,
-    id_categoria INT NOT NULL,
-=======
     id_receitaPrincipal INT,
     id_categoria INT,
->>>>>>> bbd7f8fd95bbf3765526c52bf3d6ab634227426c
     PRIMARY KEY (id_receitaPrincipal, id_categoria),  -- Garantir a unicidade da combinação
     FOREIGN KEY (id_receitaPrincipal) REFERENCES receita_principal(id) ON DELETE CASCADE,  -- Excluir as associações quando a receita for excluída
     FOREIGN KEY (id_categoria) REFERENCES categoria(id) ON DELETE CASCADE  -- Excluir as associações quando a categoria for excluída
 );
 
-<<<<<<< HEAD
 CREATE TABLE receitaS_categoria (
     id_receitaSobremesa INT NOT NULL,
     id_categoria INT NOT NULL,
     PRIMARY KEY (id_receitaSobremesa, id_categoria),  -- Garantir a unicidade da combinação
-    FOREIGN KEY (id_receitaPrincipal) REFERENCES receita_sobremesa(id) ON DELETE CASCADE,  -- Excluir as associações quando a receita for excluída
+    FOREIGN KEY (id_receitaSobremesa) REFERENCES receita_sobremesa(id) ON DELETE CASCADE,  -- Excluir as associações quando a receita for excluída
     FOREIGN KEY (id_categoria) REFERENCES categoria(id) ON DELETE CASCADE  -- Excluir as associações quando a categoria for excluída
 );
-=======
-
->>>>>>> bbd7f8fd95bbf3765526c52bf3d6ab634227426c
